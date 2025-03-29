@@ -6,20 +6,16 @@ namespace DnDPartyManager.M
     {
         [ObservableProperty]
         private string playerName = string.Empty;
-
-        // Личные черты
+        
         [ObservableProperty]
         private string personalityTraits = string.Empty;
 
-        // Идеалы
         [ObservableProperty]
         private string ideals = string.Empty;
 
-        // Привязанности
         [ObservableProperty]
         private string bonds = string.Empty;
 
-        // Слабости
         [ObservableProperty]
         private string flaws = string.Empty;
     }

@@ -8,9 +8,6 @@ namespace DnDPartyManager.M
         private string name = string.Empty;
 
         [ObservableProperty]
-        private int attackBonus;
-
-        [ObservableProperty]
-        private string damageAndType = string.Empty;
+        private string description = string.Empty;
     }
 }

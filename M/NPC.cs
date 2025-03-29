@@ -4,10 +4,9 @@ namespace DnDPartyManager.M
 {
     public partial class NPC : Character
     {
-        [ObservableProperty]
-        private string role = string.Empty;
+        [ObservableProperty] private string name = string.Empty;
 
-        [ObservableProperty]
-        private string description = string.Empty;
+        [ObservableProperty] private string description = string.Empty;
+        
     }
 }

@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
+using DnDPartyManager.S;
 
 namespace DnDPartyManager.VM;
 
@@ -13,7 +15,8 @@ public partial class MainViewModel : ObservableObject
     {
         tabs =
         [
-            new Tab() { Name = "Кампания", Uri = new Uri("/V/CampaignPage.xaml", UriKind.Relative) }
+            new Tab() { Name = "Кампания", Uri = new Uri("/V/CampaignPage.xaml", UriKind.Relative) },
+            new Tab() { Name = "Монстры", Uri = new Uri("/V/EnemiesPage.xaml", UriKind.Relative) }
         ];
         selectedTab = tabs[0];
     }
