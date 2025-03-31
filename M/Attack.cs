@@ -1,13 +1,20 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DnDPartyManager.M
 {
-    public partial class Attack : ObservableObject
+    public class Attack
     {
-        [ObservableProperty]
-        private string name = string.Empty;
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        private string description = string.Empty;
+        [JsonPropertyName("desc")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("attack_bonus")]
+        public int? AttackBonus { get; set; }
+
+        [JsonPropertyName("damage_dice")]
+        public string DamageDice { get; set; }
     }
 }

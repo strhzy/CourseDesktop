@@ -5,8 +5,29 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V"
       mc:Ignorable="d"
-      Title="EnemiesView" Height="450" Width="800">
+      Title="EnemiesView">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Row="0" Grid.Column="2" Content="enemies" Command="{Binding LoadEnemiesCommand}"></Button>
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" ItemsSource="{Binding Enemies}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                        <TextBlock Text="{Binding Size}"></TextBlock>
+                        <TextBox Text="{Binding HitPoints}"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Page>

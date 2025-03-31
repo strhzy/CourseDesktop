@@ -2,7 +2,9 @@
 using DnDPartyManager.M;
 using LiteDB;
 using System;
+using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -11,6 +13,7 @@ namespace DnDPartyManager.S;
 public static class DBHelper
 {
     public static LiteDatabase DB = new LiteDatabase(@"data.db");
+    private static readonly HttpClient client = new HttpClient();
 
     public static List<string> GetSlugs()
     {
@@ -54,16 +57,21 @@ public static class DBHelper
         return slug == data.Count;
     }
 
-    public static Enemy GetEnemy(string slug)
+    public static async Task<ObservableCollection<Enemy>> GetEnemiesAsync(int page = 1)
     {
-        string url = $"https://api.open5e.com/v1/monsters/{slug}/";
-        using HttpClient client = new HttpClient();
-        HttpResponseMessage response = client.GetAsync(url).Result;
+        string url = $"https://api.open5e.com/v1/monsters/?page={page}";
+        HttpResponseMessage response = await client.GetAsync(url);
         response.EnsureSuccessStatusCode();
 
-        string json = response.Content.ReadAsStringAsync().Result;
-        return JsonSerializer.Deserialize<Enemy>(json);
+        string json = await response.Content.ReadAsStringAsync();
+        EnemyResponse enemyResponse = JsonSerializer.Deserialize<EnemyResponse>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        return enemyResponse?.Results ?? new ObservableCollection<Enemy>();
     }
+
 }
 
 
@@ -81,4 +89,19 @@ public class SlugCount
 public class ResultItem
 {
     public string Slug { get; set; }
+}
+
+public class EnemyResponse
+{
+    [JsonPropertyName("count")]
+    public int Count { get; set; }
+
+    [JsonPropertyName("next")]
+    public string Next { get; set; }
+
+    [JsonPropertyName("previous")]
+    public string Previous { get; set; }
+
+    [JsonPropertyName("results")]
+    public ObservableCollection<Enemy> Results { get; set; }
 }
