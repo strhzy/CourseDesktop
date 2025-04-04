@@ -16,7 +16,7 @@ public partial class CampaignViewModel : ObservableObject
     [ObservableProperty]
     ObservableCollection<Campaign> campaigns;
     
-    [ObservableProperty] ObservableCollection<Object> plotItems;
+    //[ObservableProperty] ObservableCollection<Object> plotItems;
 
     [ObservableProperty] private Object selectedItem;
     
@@ -28,18 +28,12 @@ public partial class CampaignViewModel : ObservableObject
     
     public CampaignViewModel()
     {
-        plotItems = new ObservableCollection<Object>();
         tabs =
         [
             new Tab(){Name = "Сюжет", Uri = new Uri("/V/UserControls/StorySettings.xaml", UriKind.Relative) },
             new Tab(){Name = "Бой", Uri = new Uri("/V/UserControls/CombatSettings.xaml", UriKind.Relative) }
         ];
         Load();
-    }
-    
-    private void Save()
-    {
-        col.Upsert(Campaign);
     }
 
     private void Load()
@@ -51,6 +45,11 @@ public partial class CampaignViewModel : ObservableObject
             Campaigns = UnivHelper.ListToObserv(col.FindAll().ToList());
         }
         Campaign = Campaigns.First();
+        
+        foreach (var item in Campaign.PlotItems)
+        {
+            Console.WriteLine($"Loaded item of type: {item.GetType().Name}");
+        }
     }
 
     [RelayCommand]
@@ -62,9 +61,8 @@ public partial class CampaignViewModel : ObservableObject
     [RelayCommand]
     private void AddStory()
     {
-        StoryElement storyElement = new StoryElement(){Name = "stub"};
-        PlotItems.Add(storyElement);
-        Campaign.PlotItems = PlotItems;
+        StoryElement storyElement = new StoryElement(){Name = "123123123123123"};
+        Campaign.PlotItems.Add(storyElement);
         Console.WriteLine("Add story " + storyElement.Name);
         UpdateCampaign();
     }
@@ -72,8 +70,7 @@ public partial class CampaignViewModel : ObservableObject
     [RelayCommand]
     private void AddCombat()
     {
-        PlotItems.Add(new Combat(){Name = "stub"});
-        Campaign.PlotItems = PlotItems;
+        Campaign.PlotItems.Add(new Combat(){Name = "stub"});
         Console.WriteLine("Add stub combat");
         UpdateCampaign();
     }
@@ -84,33 +81,34 @@ public partial class CampaignViewModel : ObservableObject
         if (item != null && Campaign.PlotItems.Contains(item))
         {
             Campaign.PlotItems.Remove(item);
+            Console.WriteLine("Delete stub " + item.ToString());
             UpdateCampaign();
         }
     }
 
-    // partial void OnCampaignChanged(Campaign value)
-    // {
-    //     Console.WriteLine(Campaign.Name);
-    // }
-    //
-    // partial void OnSelectedItemChanged(object oldValue, object newValue)
-    // {
-    //     if (newValue != null)
-    //     {
-    //         Console.WriteLine($"Choosed: {newValue}");
-    //         
-    //         if (newValue is Combat combat)
-    //         {
-    //             Console.WriteLine($"Choosed Combat: {combat.Name}");
-    //             Application.Current.Properties["SelectedPlotItem"] = selectedItem as Combat;
-    //             selectedTab = tabs[1];
-    //         }
-    //         else if (newValue is StoryElement story)
-    //         {
-    //             Console.WriteLine($"Choosed StoryElement: {story.Name}");
-    //             Application.Current.Properties["SelectedPlotItem"] = selectedItem as StoryElement;
-    //             selectedTab = tabs[0];
-    //         }
-    //     }
-    // }
+    partial void OnCampaignChanged(Campaign value)
+    {
+        Console.WriteLine(Campaign.Name);
+    }
+    
+    partial void OnSelectedItemChanged(object newValue)
+    {
+        if (newValue != null)
+        {
+            Console.WriteLine($"Chose: {newValue}");
+            
+            if (newValue is Combat combat)
+            {
+                Console.WriteLine($"Chose Combat: {combat.Name}");
+                Application.Current.Properties["SelectedPlotItem"] = selectedItem as Combat;
+                SelectedTab = tabs[1];
+            }
+            else if (newValue is StoryElement story)
+            {
+                Console.WriteLine($"Chose StoryElement: {story.Name}");
+                Application.Current.Properties["SelectedPlotItem"] = selectedItem as StoryElement;
+                SelectedTab = tabs[0];
+            }
+        }
+    }
 }

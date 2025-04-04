@@ -14,6 +14,6 @@ namespace DnDPartyManager.M
         private string name;
 
         [ObservableProperty]
-        private ObservableCollection<Object> plotItems = new();
+        private ObservableCollection<object> plotItems = new();
     }
 }

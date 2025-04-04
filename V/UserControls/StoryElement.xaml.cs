@@ -8,6 +8,5 @@ public partial class StoryElement : UserControl
     public StoryElement()
     {
         InitializeComponent();
-        DataContext = new SettingsViewModel();
     }
 }

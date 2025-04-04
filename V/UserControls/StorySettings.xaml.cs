@@ -8,6 +8,6 @@ public partial class StorySettings : Page
     public StorySettings()
     {
         InitializeComponent();
-        DataContext = new CampaignViewModel();
+        DataContext = new SettingsViewModel();
     }
 }

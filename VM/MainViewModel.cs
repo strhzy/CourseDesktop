@@ -21,6 +21,6 @@ public partial class MainViewModel : ObservableObject
             new Tab() { Name = "Монстры", Uri = new Uri("/V/EnemiesPage.xaml", UriKind.Relative) }
         ];
         
-        selectedTab = tabs[0];
+        SelectedTab = tabs[0];
     }
 }

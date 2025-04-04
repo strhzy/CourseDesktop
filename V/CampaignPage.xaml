@@ -53,6 +53,6 @@
                  ItemTemplateSelector="{StaticResource ElementTemplateSelector}" 
                  ScrollViewer.CanContentScroll="False">
         </ListBox>
-        <Frame Grid.Row="2" Grid.Column="2" Source="{Binding SelectedTab}"></Frame>
+        <Frame Grid.Row="2" Grid.Column="2" Source="{Binding SelectedTab.Uri}"></Frame>
     </Grid>
 </Page>
