@@ -14,12 +14,16 @@ public class ElementTemplateSelector : DataTemplateSelector
     {
         if (item is Combat)
         {
+            Console.WriteLine("Combat item selected");
             return CombatTemplate;
         }
         if (item is StoryElement)
         {
+            Console.WriteLine("StoryElement item selected");
             return StoryElementTemplate;
         }
+
+        Console.WriteLine("Unknown item selected");
         return base.SelectTemplate(item, container);
     }
 }

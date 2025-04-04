@@ -15,7 +15,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <Frame Source="{Binding PageFactory}" NavigationUIVisibility="Hidden"></Frame>
+                    <Frame Source="{Binding Uri}" NavigationUIVisibility="Hidden"></Frame>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

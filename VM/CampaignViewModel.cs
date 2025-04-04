@@ -28,6 +28,7 @@ public partial class CampaignViewModel : ObservableObject
     
     public CampaignViewModel()
     {
+        plotItems = new ObservableCollection<Object>();
         tabs =
         [
             new Tab(){Name = "Сюжет", Uri = new Uri("/V/UserControls/StorySettings.xaml", UriKind.Relative) },
@@ -61,14 +62,19 @@ public partial class CampaignViewModel : ObservableObject
     [RelayCommand]
     private void AddStory()
     {
-        campaign.PlotItems.Add(new StoryElement(){Name = "stub", Description = "stub"});
+        StoryElement storyElement = new StoryElement(){Name = "stub"};
+        PlotItems.Add(storyElement);
+        Campaign.PlotItems = PlotItems;
+        Console.WriteLine("Add story " + storyElement.Name);
         UpdateCampaign();
     }
 
     [RelayCommand]
     private void AddCombat()
     {
-        Campaign.PlotItems.Add(new Combat(){Name = "stub"});
+        PlotItems.Add(new Combat(){Name = "stub"});
+        Campaign.PlotItems = PlotItems;
+        Console.WriteLine("Add stub combat");
         UpdateCampaign();
     }
     
@@ -82,29 +88,29 @@ public partial class CampaignViewModel : ObservableObject
         }
     }
 
-    partial void OnCampaignChanged(Campaign value)
-    {
-        MessageBox.Show(Campaign.Name);
-    }
-    
-    partial void OnSelectedItemChanged(object oldValue, object newValue)
-    {
-        if (newValue != null)
-        {
-            Console.WriteLine($"Choosed: {newValue}");
-            
-            if (newValue is Combat combat)
-            {
-                Console.WriteLine($"Choosed Combat: {combat.Name}");
-                Application.Current.Properties["SelectedPlotItem"] = selectedItem as Combat;
-                selectedItem = tabs[1];
-            }
-            else if (newValue is StoryElement story)
-            {
-                Console.WriteLine($"Choosed StoryElement: {story.Name}");
-                Application.Current.Properties["SelectedPlotItem"] = selectedItem as StoryElement;
-                selectedItem = tabs[0];
-            }
-        }
-    }
+    // partial void OnCampaignChanged(Campaign value)
+    // {
+    //     Console.WriteLine(Campaign.Name);
+    // }
+    //
+    // partial void OnSelectedItemChanged(object oldValue, object newValue)
+    // {
+    //     if (newValue != null)
+    //     {
+    //         Console.WriteLine($"Choosed: {newValue}");
+    //         
+    //         if (newValue is Combat combat)
+    //         {
+    //             Console.WriteLine($"Choosed Combat: {combat.Name}");
+    //             Application.Current.Properties["SelectedPlotItem"] = selectedItem as Combat;
+    //             selectedTab = tabs[1];
+    //         }
+    //         else if (newValue is StoryElement story)
+    //         {
+    //             Console.WriteLine($"Choosed StoryElement: {story.Name}");
+    //             Application.Current.Properties["SelectedPlotItem"] = selectedItem as StoryElement;
+    //             selectedTab = tabs[0];
+    //         }
+    //     }
+    // }
 }

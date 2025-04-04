@@ -8,8 +8,9 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Name, Mode=TwoWay}"></TextBlock>
-                <TextBlock Text="{Binding Description, Mode=TwoWay}" TextWrapping="Wrap"></TextBlock>
+                <TextBlock>Хуйня</TextBlock>
+                <TextBlock Text="{Binding Name}"></TextBlock>
+                
             </StackPanel>
             <Button Content="Удалить" 
                     Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"

@@ -22,7 +22,7 @@
             CombatTemplate="{StaticResource CombatTemplate}"
             StoryElementTemplate="{StaticResource StoryElementTemplate}" />
     </Page.Resources>
-    <Grid>
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>

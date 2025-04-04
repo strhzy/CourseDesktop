@@ -6,10 +6,6 @@ namespace DnDPartyManager.M
 {
     public partial class Combat : ObservableObject
     {
-        [BsonId(true)]
-        [ObservableProperty]
-        private int id;
-        
         [ObservableProperty]
         private string name;
 
