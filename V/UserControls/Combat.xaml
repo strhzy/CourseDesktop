@@ -6,6 +6,12 @@
              xmlns:local="clr-namespace:DnDPartyManager.V.UserControls"
              mc:Ignorable="d" MaxWidth="600">
     <Grid>
-        <TextBlock>Это бой</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Это бой</TextBlock>
+            <Button Content="Удалить" 
+                    Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                    CommandParameter="{Binding}"
+                    Margin="5,0,0,0"/>    
+        </StackPanel>
     </Grid>
 </UserControl>

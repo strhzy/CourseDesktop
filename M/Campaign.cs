@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LiteDB;
 
 namespace DnDPartyManager.M
@@ -13,6 +14,6 @@ namespace DnDPartyManager.M
         private string name;
 
         [ObservableProperty]
-        private List<Object> plotItems = new();
+        private ObservableCollection<Object> plotItems = new();
     }
 }

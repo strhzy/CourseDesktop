@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DnDPartyManager.M;
@@ -15,6 +17,8 @@ public partial class CampaignViewModel : ObservableObject
     ObservableCollection<Campaign> campaigns;
     
     [ObservableProperty] ObservableCollection<Object> plotItems;
+
+    [ObservableProperty] private Object selectedItem;
     
     [ObservableProperty]
     Campaign campaign;
@@ -31,23 +35,47 @@ public partial class CampaignViewModel : ObservableObject
 
     private void Load()
     {
-        col.Insert(new Campaign(){Name = "123"});
-        
         Campaigns = UnivHelper.ListToObserv(col.FindAll().ToList());
-        Campaign = Campaigns.First();
-        
-        if (Campaign != null)
+        if (Campaigns.Count == 0)
         {
-            ObservableCollection<Object> plots = new ObservableCollection<Object>();
-            plots.Add(new Combat());
-            plots.Add(new Combat());
-            plots.Add(new Combat());
-            plots.Add(new StoryElement());
-            plots.Add(new StoryElement());
-            Campaign.PlotItems.AddRange(plots);
-            PlotItems = UnivHelper.ListToObserv(Campaign.PlotItems.ToList());
+            col.Insert(new Campaign(){Name = "Кампания 1"});
+            Campaigns = UnivHelper.ListToObserv(col.FindAll().ToList());
+        }
+        Campaign = Campaigns.First();
+    }
+
+    [RelayCommand]
+    private void UpdateCampaign()
+    {
+        col.Update(Campaign);
+    }
+
+    [RelayCommand]
+    private void AddStory()
+    {
+        campaign.PlotItems.Add(new StoryElement(){Name = "stub", Description = "stub"});
+        UpdateCampaign();
+    }
+
+    [RelayCommand]
+    private void AddCombat()
+    {
+        Campaign.PlotItems.Add(new Combat(){Name = "stub"});
+        UpdateCampaign();
+    }
+    
+    [RelayCommand]
+    private void DeleteItem(object item)
+    {
+        if (item != null && Campaign.PlotItems.Contains(item))
+        {
+            Campaign.PlotItems.Remove(item);
+            UpdateCampaign();
         }
     }
 
-    
+    partial void OnCampaignChanged(Campaign value)
+    {
+        MessageBox.Show(Campaign.Name);
+    }
 }

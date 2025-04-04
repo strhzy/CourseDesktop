@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DnDPartyManager.S;
 
@@ -7,7 +8,7 @@ namespace DnDPartyManager.VM;
 public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
-    private List<Tab> tabs;
+    private ObservableCollection<Tab> tabs;
     
     [ObservableProperty]
     private Tab? selectedTab;

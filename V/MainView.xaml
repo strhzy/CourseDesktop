@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DnDPartyManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920">
+        Title="MainWindow" MinHeight="900" MinWidth="1600">
     <Grid>
         <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding Tab}">
             <TabControl.ItemTemplate>
