@@ -37,7 +37,7 @@ public static class DBHelper
             if (data?.Results != null)
                 allSlugs.AddRange(data.Results.ConvertAll(r => r.Slug));
 
-            url = data?.Next; // Переход на следующую страницу (если есть)
+            url = data?.Next;
         }
 
         return allSlugs;

@@ -12,18 +12,10 @@ namespace DnDPartyManager.VM;
 public partial class CampaignViewModel : ObservableObject
 {
     static ILiteCollection<Campaign> col = DBHelper.DB.GetCollection<Campaign>("campaigns");
-    
-    [ObservableProperty]
-    ObservableCollection<Campaign> campaigns;
-    
-    //[ObservableProperty] ObservableCollection<Object> plotItems;
-
+    [ObservableProperty] ObservableCollection<Campaign> campaigns;
     [ObservableProperty] private Object selectedItem;
-    
     [ObservableProperty] private Tab selectedTab;
-    
     [ObservableProperty] private ObservableCollection<Tab> tabs;
-    
     [ObservableProperty] Campaign campaign;
     
     public CampaignViewModel()
@@ -96,7 +88,7 @@ public partial class CampaignViewModel : ObservableObject
         if (newValue != null)
         {
             Console.WriteLine($"Chose: {newValue}");
-            
+            Application.Current.Properties["CurrentCampaign"] = Campaign;
             if (newValue is Combat combat)
             {
                 Console.WriteLine($"Chose Combat: {combat.Name}");
@@ -111,4 +103,6 @@ public partial class CampaignViewModel : ObservableObject
             }
         }
     }
+    
+    
 }
