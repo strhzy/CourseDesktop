@@ -20,11 +20,19 @@ public partial class CampaignViewModel : ObservableObject
 
     [ObservableProperty] private Object selectedItem;
     
-    [ObservableProperty]
-    Campaign campaign;
+    [ObservableProperty] private Tab selectedTab;
+    
+    [ObservableProperty] private ObservableCollection<Tab> tabs;
+    
+    [ObservableProperty] Campaign campaign;
     
     public CampaignViewModel()
     {
+        tabs =
+        [
+            new Tab(){Name = "Сюжет", Uri = new Uri("/V/UserControls/StorySettings.xaml", UriKind.Relative) },
+            new Tab(){Name = "Бой", Uri = new Uri("/V/UserControls/CombatSettings.xaml", UriKind.Relative) }
+        ];
         Load();
     }
     
@@ -77,5 +85,26 @@ public partial class CampaignViewModel : ObservableObject
     partial void OnCampaignChanged(Campaign value)
     {
         MessageBox.Show(Campaign.Name);
+    }
+    
+    partial void OnSelectedItemChanged(object oldValue, object newValue)
+    {
+        if (newValue != null)
+        {
+            Console.WriteLine($"Choosed: {newValue}");
+            
+            if (newValue is Combat combat)
+            {
+                Console.WriteLine($"Choosed Combat: {combat.Name}");
+                Application.Current.Properties["SelectedPlotItem"] = selectedItem as Combat;
+                selectedItem = tabs[1];
+            }
+            else if (newValue is StoryElement story)
+            {
+                Console.WriteLine($"Choosed StoryElement: {story.Name}");
+                Application.Current.Properties["SelectedPlotItem"] = selectedItem as StoryElement;
+                selectedItem = tabs[0];
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
-<Page x:Class="DnDPartyManager.V.UserControls.StorySettings"
+<Page x:Class="DnDPartyManager.V.UserControls.CombatSettings"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
-      Title="StorySettings" Height="450" Width="800">
+      Title="CombatSettings" Height="450" Width="800">
     <Grid>
-        <TextBlock>Сюжет</TextBlock>
+        <TextBlock>Бой</TextBlock>
     </Grid>
 </Page>
