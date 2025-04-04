@@ -9,12 +9,12 @@ namespace DnDPartyManager.VM;
 
 public partial class CampaignViewModel : ObservableObject
 {
-    ILiteCollection<Campaign> col = DBHelper.DB.GetCollection<Campaign>("campaigns");
-    partial void OnTitleChanged(string value);
-    partial void OnDescriptionChanged(string value);
+    static ILiteCollection<Campaign> col = DBHelper.DB.GetCollection<Campaign>("campaigns");
     
     [ObservableProperty]
-    List<Campaign> campaigns;
+    ObservableCollection<Campaign> campaigns;
+    
+    [ObservableProperty] ObservableCollection<Object> plotItems;
     
     [ObservableProperty]
     Campaign campaign;
@@ -23,30 +23,31 @@ public partial class CampaignViewModel : ObservableObject
     {
         Load();
     }
-
-    partial void OnTitleChanged(string value)
-    {
-        Console.WriteLine($"Title changed to: {value}");
-        Save();
-    }
-    
-    partial void OnDescriptionChanged(string value)
-    {
-        Console.WriteLine($"Title changed to: {value}");
-        Save();
-    }
     
     private void Save()
     {
-        using var db = new LiteDatabase("data.db");
-        var collection = db.GetCollection<Campaign>("campaigns");
-        collection.Upsert(Campaign);
+        col.Upsert(Campaign);
     }
 
     private void Load()
     {
-        campaigns = col.FindAll().ToList();
+        col.Insert(new Campaign(){Name = "123"});
+        
+        Campaigns = UnivHelper.ListToObserv(col.FindAll().ToList());
+        Campaign = Campaigns.First();
+        
+        if (Campaign != null)
+        {
+            ObservableCollection<Object> plots = new ObservableCollection<Object>();
+            plots.Add(new Combat());
+            plots.Add(new Combat());
+            plots.Add(new Combat());
+            plots.Add(new StoryElement());
+            plots.Add(new StoryElement());
+            Campaign.PlotItems.AddRange(plots);
+            PlotItems = UnivHelper.ListToObserv(Campaign.PlotItems.ToList());
+        }
     }
-    
+
     
 }

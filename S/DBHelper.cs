@@ -14,6 +14,7 @@ public static class DBHelper
 {
     public static LiteDatabase DB = new LiteDatabase(@"data.db");
     private static readonly HttpClient client = new HttpClient();
+    private static EnemyResponse lastResponse = null;
 
     public static List<string> GetSlugs()
     {
@@ -23,7 +24,7 @@ public static class DBHelper
     
         string url = baseUrl;
     
-        while (url != null) // Пока есть следующая страница
+        while (url != null)
         {
             HttpResponseMessage response = client.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
@@ -57,21 +58,34 @@ public static class DBHelper
         return slug == data.Count;
     }
 
-    public static async Task<ObservableCollection<Enemy>> GetEnemiesAsync(int page = 1)
+    public static async Task<ObservableCollection<Enemy>> GetEnemiesAsync(int page = 1, string filter = "")
     {
-        string url = $"https://api.open5e.com/v1/monsters/?page={page}";
+        if (lastResponse != null)
+        {
+            if (lastResponse.Previous == null && page != 2)
+            {
+                page = 1;
+            }
+            else if (lastResponse.Next == null)
+            {
+                page--;
+            }
+        }
+        // TODO: обдумать поиск и перевод на русский
+        string url = $"https://api.open5e.com/v1/monsters/?page={page}&name__icontains={filter}";
         HttpResponseMessage response = await client.GetAsync(url);
         response.EnsureSuccessStatusCode();
 
+        EnemyResponse enemyResponse;
         string json = await response.Content.ReadAsStringAsync();
-        EnemyResponse enemyResponse = JsonSerializer.Deserialize<EnemyResponse>(json, new JsonSerializerOptions
+        enemyResponse = JsonSerializer.Deserialize<EnemyResponse>(json, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
-
+        lastResponse = enemyResponse;
+        
         return enemyResponse?.Results ?? new ObservableCollection<Enemy>();
     }
-
 }
 
 

@@ -13,9 +13,6 @@ namespace DnDPartyManager.M
         private string name;
 
         [ObservableProperty]
-        private List<StoryElement> stories = new();
-        
-        [ObservableProperty]
-        private List<Combat> combats = new();
+        private List<Object> plotItems = new();
     }
 }

@@ -4,8 +4,24 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V"
+      xmlns:m="clr-namespace:DnDPartyManager.V.UserControls"
+      xmlns:s="clr-namespace:DnDPartyManager.S"
       mc:Ignorable="d"
       Title="CampaignPage">
+    <Page.Resources>
+        <DataTemplate x:Key="CombatTemplate">
+            <m:Combat/>
+        </DataTemplate>
+       
+        <DataTemplate x:Key="StoryElementTemplate">
+            <m:StoryElement />
+        </DataTemplate>
+        
+        <s:ElementTemplateSelector 
+            x:Key="ElementTemplateSelector"
+            CombatTemplate="{StaticResource CombatTemplate}"
+            StoryElementTemplate="{StaticResource StoryElementTemplate}" />
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -26,36 +42,7 @@
         </ComboBox>
         <TextBlock Grid.Row="1" Grid.Column="0" FontSize="20" Text="Сюжет"></TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="20" Text="Бои"></TextBlock>
-        <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Campaign.Stories}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBox Text="{Binding Title, Mode=TwoWay}"></TextBox>
-                        <TextBox Text="{Binding Description, Mode=TwoWay}"></TextBox>
-                        <ListBox ItemsSource="{Binding Players}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding PlayerName}"></TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <ListBox ItemsSource="{Binding Npcs}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <ListBox ItemsSource="{Binding Enemies}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Campaign.PlotItems}" ItemTemplateSelector="{StaticResource ElementTemplateSelector}" ScrollViewer.CanContentScroll="False">
         </ListBox>
     </Grid>
 </Page>

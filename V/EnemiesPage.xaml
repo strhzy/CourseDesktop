@@ -4,30 +4,37 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V"
+      xmlns:cards="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
       Title="EnemiesView">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Button Grid.Row="0" Grid.Column="2" Content="enemies" Command="{Binding LoadEnemiesCommand}"></Button>
-        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" ItemsSource="{Binding Enemies}">
+        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Enemies}" ScrollViewer.CanContentScroll="False">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                        <TextBlock Text="{Binding Size}"></TextBlock>
-                        <TextBox Text="{Binding HitPoints}"></TextBox>
-                    </StackPanel>
+                    <cards:Enemy/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Command="{Binding PrevPageCommand}" Margin="15" Content="&lt;"></Button>
+            <TextBlock Grid.Column="1" Text="{Binding CurrentPage}" FontSize="40" TextAlignment="Center"></TextBlock>
+            <Button Grid.Column="2" Command="{Binding NextPageCommand}" Margin="15" Content=">"></Button>
+        </Grid>
     </Grid>
 </Page>

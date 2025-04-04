@@ -16,17 +16,47 @@ public partial class EnemiesViewModel : ObservableObject
 
     [ObservableProperty] private Enemy enemy;
     
+    [ObservableProperty] private int currentPage = 1;
+    
     [ObservableProperty] private ObservableCollection<Enemy> enemies = new ObservableCollection<Enemy>();
 
     [RelayCommand]
     private async Task LoadEnemies()
     {
-        enemies.Clear();
-        foreach (var enem in await DBHelper.GetEnemiesAsync()) enemies.Add(enem);
+        Enemies.Clear();
+        foreach (var enem in await DBHelper.GetEnemiesAsync())
+        {
+            Enemies.Add(enem);
+            Console.WriteLine(Enemies.Count);
+        }
+    }
+
+    [RelayCommand]
+    private async Task NextPage()
+    {
+        CurrentPage++;
+        Enemies.Clear();
+        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage))
+        {
+            Enemies.Add(enem);
+            Console.WriteLine(Enemies.Count);
+        }
+    }
+    
+    [RelayCommand]
+    private async Task PrevPage()
+    {
+        CurrentPage--;
+        Enemies.Clear();
+        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage))
+        {
+            Application.Current.Dispatcher.Invoke(() => Enemies.Add(enem));
+            Console.WriteLine(Enemies.Count);
+        }
     }
 
     public EnemiesViewModel()
     {
-        
+        Application.Current.Dispatcher.InvokeAsync(async () => await LoadEnemies());
     }
 }
