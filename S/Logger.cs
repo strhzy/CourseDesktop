@@ -1,6 +1,13 @@
+using DnDPartyManager.M;
+using LiteDB;
+
 namespace DnDPartyManager.S;
 
-public class Logger
+public static class Logger
 {
-    //TODO написать логгер в базу данных и страницу для него
+    static ILiteCollection<Log> col = DBHelper.DB.GetCollection<Log>("logs");
+    public static void Log(string tag, string message)
+    {
+        col.Insert(new Log(tag, message, DateTime.Now));
+    }
 }
