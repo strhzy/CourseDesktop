@@ -44,15 +44,13 @@ namespace DnDPartyManager.M
 
         [ObservableProperty]
         private int charisma;
-
-        // Производные характеристики
+        
         [ObservableProperty]
         private int inspiration;
 
         [ObservableProperty]
         private int proficiencyBonus;
 
-        // Спасброски
         [ObservableProperty]
         private int savingThrowStrength;
 
@@ -70,8 +68,7 @@ namespace DnDPartyManager.M
 
         [ObservableProperty]
         private int savingThrowCharisma;
-
-        // Навыки
+        
         [ObservableProperty]
         private int acrobatics;
 
@@ -129,7 +126,6 @@ namespace DnDPartyManager.M
         [ObservableProperty]
         private int passiveWisdom;
 
-        // Боевые характеристики
         [ObservableProperty]
         private int armorClass;
 
