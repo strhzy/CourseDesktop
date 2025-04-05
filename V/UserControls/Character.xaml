@@ -140,7 +140,7 @@
             </Border>
             <Border Margin="5" Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
-                    <при IsChecked="{Binding Inspiration}" VerticalAlignment="Center" Margin="3"></при>
+                    <CheckBox IsChecked="{Binding Inspiration}" VerticalAlignment="Center" Margin="3"></CheckBox>
                     <TextBlock VerticalAlignment="Center">Вдохновение</TextBlock>
                 </StackPanel>
             </Border>
