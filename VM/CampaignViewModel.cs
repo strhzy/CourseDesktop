@@ -103,6 +103,4 @@ public partial class CampaignViewModel : ObservableObject
             }
         }
     }
-    
-    
 }
