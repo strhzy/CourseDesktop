@@ -25,8 +25,7 @@ namespace DnDPartyManager.M
 
         [ObservableProperty]
         private int level = 1;
-
-        // Характеристики
+        
         [ObservableProperty]
         private int strength;
 
@@ -157,16 +156,16 @@ namespace DnDPartyManager.M
         [ObservableProperty]
         private List<Attack> attacks = new();
 
-        // Особенности и черты
+        
         [ObservableProperty]
-        private List<string> featuresAndTraits = new();
+        private string featuresAndTraits;
 
-        // Снаряжение
+        
         [ObservableProperty]
-        private List<string> equipment = new();
+        private string equipment;
 
-        // Прочие владения и языки
+        
         [ObservableProperty]
-        private List<string> proficienciesAndLanguages = new();
+        private string proficienciesAndLanguages;
     }
 }

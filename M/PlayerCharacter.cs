@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DnDPartyManager.M
 {
@@ -18,5 +19,20 @@ namespace DnDPartyManager.M
 
         [ObservableProperty]
         private string flaws = string.Empty;
+        
+        [ObservableProperty]
+        private int coppers = 0;
+        
+        [ObservableProperty]
+        private int silvers = 0;
+        
+        [ObservableProperty]
+        private int gold = 0;
+        
+        [ObservableProperty]
+        private int electrums = 0;
+        
+        [ObservableProperty]
+        private int platinums = 0;
     }
 }
