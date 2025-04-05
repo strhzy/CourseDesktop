@@ -45,7 +45,7 @@ namespace DnDPartyManager.M
         private int charisma;
         
         [ObservableProperty]
-        private int inspiration;
+        private bool inspiration;
 
         [ObservableProperty]
         private int proficiencyBonus;
