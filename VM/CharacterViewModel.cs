@@ -10,14 +10,14 @@ namespace DnDPartyManager.VM;
 
 public partial class CharacterViewModel : ObservableObject
 {
-    [ObservableProperty] static ILiteCollection<PlayerCharacter> col = DBHelper.DB.GetCollection<PlayerCharacter>("campaigns");
+    [ObservableProperty] static ILiteCollection<PlayerCharacter> col = DBHelper.DB.GetCollection<PlayerCharacter>("characters");
     [ObservableProperty] private ObservableCollection<PlayerCharacter> playerCharacters;
     [ObservableProperty] private PlayerCharacter selectedPlayer;
+    [ObservableProperty] private Uri uri;
     
     public CharacterViewModel()
     {
         UpdateCol();
-        
     }
 
     [RelayCommand]
@@ -38,19 +38,34 @@ public partial class CharacterViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void Clear()
+    {
+        Uri = null;
+    }
+
     public void UpdateCol()
     {
-        playerCharacters.Clear();
-        playerCharacters = UnivHelper.ListToObserv(col.FindAll().ToList());
+        if (PlayerCharacters != null)
+        {
+            if (PlayerCharacters.Count() != 0)
+            {
+                PlayerCharacters.Clear();
+            }
+        }
+        PlayerCharacters = UnivHelper.ListToObserv(col.FindAll().ToList());
     }
     
     partial void OnSelectedPlayerChanged(PlayerCharacter newValue)
     {
+        Uri = new Uri("", UriKind.Relative);
         if (newValue != null)
         {
             Console.WriteLine($"Chose player: {newValue.Name}");
+            Console.WriteLine("Cleared uri");
             Application.Current.Properties["SelectedPlayer"] = newValue;
-            
+            Uri = new Uri("/V/UserControls/Character.xaml", UriKind.Relative);
+            Console.WriteLine($"Set uri: {Uri}");
         }
     }
 }

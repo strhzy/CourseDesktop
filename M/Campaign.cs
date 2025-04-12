@@ -8,7 +8,7 @@ namespace DnDPartyManager.M
     {
         [BsonId(true)]
         [ObservableProperty]
-        private long id;
+        private int id;
         
         [ObservableProperty]
         private string name;

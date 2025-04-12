@@ -15,6 +15,5 @@
                     CommandParameter="{Binding}"
                     Margin="5,0,0,0"/>
         </StackPanel>
-        
     </Grid>
 </UserControl>

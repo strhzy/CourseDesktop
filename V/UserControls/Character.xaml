@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DnDPartyManager.V.UserControls"
-             mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="600">
+             xmlns:converters="clr-namespace:DnDPartyManager.S"
+             mc:Ignorable="d">
+    <Page.Resources>
+        <converters:AbilityScoreToModifierConverter x:Key="AbilityScoreToModifierConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -24,7 +27,7 @@
                 <ColumnDefinition Width="2.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center" Grid.Column="0" Margin="2 0">
-                <TextBox Text="{Binding Name}"></TextBox>
+                <TextBox Padding="0" Text="{Binding PlayerCharacter.Name}"></TextBox>
                 <TextBlock FontSize="8">Имя персонажа</TextBlock>
             </StackPanel>
             <Border Margin="1" BorderBrush="Black" BorderThickness="1" CornerRadius="2" Grid.Column="1">
@@ -40,32 +43,32 @@
                         <ColumnDefinition Width="0.3*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="2 0" Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                        <TextBox Text="{Binding ClassType}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Класс</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.ClassType}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Класс</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="1" Grid.Column="0" Orientation="Vertical">
-                        <TextBox Text="{Binding Race}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Раса</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.Race}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Раса</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                        <TextBox Text="{Binding Background}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Предыстория</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.Background}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Предыстория</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-                        <TextBox Text="{Binding Alignment}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Мировоззрение</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.Alignment}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Мировоззрение</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Vertical">
-                        <TextBox Text="{Binding PlayerName}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Имя игрока</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.PlayerName}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Имя игрока</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="1" Grid.Column="2" Orientation="Vertical">
-                        <TextBox Text="{Binding ExperiencePoints}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Опыт</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.ExperiencePoints}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Опыт</TextBlock>
                     </StackPanel>
                     <StackPanel Margin="2 0" Grid.Row="1" Grid.Column="3" Orientation="Vertical">
-                        <TextBox Text="{Binding Level}" FontSize="6"></TextBox>
-                        <TextBlock FontSize="6">Уровень</TextBlock>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.Level}" FontSize="8"></TextBox>
+                        <TextBlock FontSize="8">Уровень</TextBlock>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -87,8 +90,8 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 20 0 5">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="8" HorizontalAlignment="Center" Text="Сила" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Strength, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Strength}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Strength, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Strength}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -96,8 +99,8 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 7">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="8" HorizontalAlignment="Center" Text="Ловкость" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Dexterity, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Dexterity}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Dexterity, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Dexterity}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -105,8 +108,8 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 7">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="6" HorizontalAlignment="Center" Text="Телосложение" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Constitution, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Constitution}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Constitution, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Constitution}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -114,8 +117,8 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 7">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="6" HorizontalAlignment="Center" Text="Интеллект" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Intelligence, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Intelligence}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Intelligence, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Intelligence}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -123,8 +126,8 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 7">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="6" HorizontalAlignment="Center" Text="Мудрость" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Wisdom, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Wisdom}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Wisdom, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Wisdom}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -132,22 +135,22 @@
                     <Border BorderBrush="Gray" Background="White" BorderThickness="1" CornerRadius="5" Margin="0 5">
                         <StackPanel Margin="2">
                             <TextBlock FontSize="6" HorizontalAlignment="Center" Text="Харизма" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Charisma, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding Charisma}" Width="15" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding PlayerCharacter.Charisma, Converter={StaticResource AbilityScoreToModifierConverter}}" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Charisma}" Width="25" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
             </Border>
             <Border Margin="5" Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding Inspiration}" VerticalAlignment="Center" Margin="3"></CheckBox>
+                    <CheckBox IsChecked="{Binding PlayerCharacter.Inspiration}" VerticalAlignment="Center" Margin="3"></CheckBox>
                     <TextBlock VerticalAlignment="Center">Вдохновение</TextBlock>
                 </StackPanel>
             </Border>
             <Border Margin="5" Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                 <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center">+</TextBlock>
-                    <TextBox Width="20" VerticalAlignment="Center" Margin="0 0 4 0"></TextBox>
+                    <TextBox Padding="0" Width="20" VerticalAlignment="Center" Margin="0 0 4 0"></TextBox>
                     <TextBlock VerticalAlignment="Center">Бонус владения</TextBlock>
                 </StackPanel>
             </Border>
@@ -163,33 +166,33 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowStrengthProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowStrength, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowStrengthProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowStrength, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Сила</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowDexterityProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowDexterity, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowDexterityProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowDexterity, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Ловкость</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowConstitutionProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowConstitution, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowConstitutionProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowConstitution, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Телосложение</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowIntelligenceProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowIntelligence, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowIntelligenceProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowIntelligence, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Интеллект</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="4" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowWisdomProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowWisdom, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowWisdomProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowWisdom, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Мудрость</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="5" Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding SavingThrowCharismaProficiency}"/>
-                        <TextBox Width="15" Text="{Binding SavingThrowCharisma, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
+                        <CheckBox IsChecked="{Binding PlayerCharacter.SavingThrowCharismaProficiency}"/>
+                        <TextBox Padding="0" Width="25" Text="{Binding PlayerCharacter.SavingThrowCharisma, Converter={StaticResource AbilityScoreToModifierConverter}}"/>
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="5 0">Харизма</TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="6" HorizontalAlignment="Center" FontWeight="Bold">СПАСБРОСКИ</TextBlock>
@@ -220,92 +223,92 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Акробатика (Лов)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Анализ (Инт)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Атлетика (Сил)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Восприятие (Муд)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="4" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Выживание (Муд)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="5" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Выступление (Хар)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="6" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Запугивание (Хар)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="7" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">История (Инт)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="8" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Ловкость рук (Лов)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="9" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Магия (Инт)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="10" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Медицина (Муд)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="11" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Обман (Хар)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="12" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Природа (Инт)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="13" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Проницательность (Муд)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="14" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Религия (Инт)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="15" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Скрытность (Лов)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="16" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Убеждение (Хар)</TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="17" Orientation="Horizontal">
                         <CheckBox></CheckBox>
-                        <TextBox Width="15"></TextBox>
+                        <TextBox Padding="0" Width="25"></TextBox>
                         <TextBlock FontSize="8" VerticalAlignment="Center" Margin="5 0">Уход за животными (Муд)</TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="18" HorizontalAlignment="Center" FontWeight="Bold">НАВЫКИ</TextBlock>
@@ -328,7 +331,7 @@
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="0 0 5 5">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox Text="{Binding ArmorClass}" Background="Transparent"/>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.ArmorClass}" Background="Transparent"/>
                         <TextBlock FontSize="5" HorizontalAlignment="Center" Margin="0 5 0 0">КЗ</TextBlock>
                     </StackPanel>
                 </Border>
@@ -336,14 +339,14 @@
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock>+</TextBlock>
-                            <TextBox Text="{Binding Initiative}" Background="Transparent" Width="25"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.Initiative}" Background="Transparent" Width="25"/>
                         </StackPanel>
                         <TextBlock FontSize="5" HorizontalAlignment="Center" Margin="0 5 0 0">Инициатива</TextBlock>
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="3" Background="White" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox Text="{Binding Speed}" Background="Transparent"/>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.Speed}" Background="Transparent"/>
                         <TextBlock FontSize="5" HorizontalAlignment="Center" Margin="0 5 0 0">Скорость</TextBlock>
                     </StackPanel>
                 </Border>
@@ -351,15 +354,15 @@
                     <StackPanel Orientation="Vertical" Margin="2" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="8" Margin="0 0 5 0">Максимум хитов</TextBlock>
-                            <TextBox Text="{Binding MaxHitPoints}" Width="100"/>
+                            <TextBox Padding="0" Text="{Binding PlayerCharacter.MaxHitPoints}" Width="100"/>
                         </StackPanel>
-                        <TextBox Text="{Binding CurrentHitPoints}" Background="Transparent"/>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.CurrentHitPoints}" Background="Transparent"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="10">Текущие хиты</TextBlock>
                     </StackPanel>
                 </Border>
                 <Border Grid.Row="2" Grid.ColumnSpan="4" CornerRadius="5" Background="White" Margin="1">
                     <StackPanel Orientation="Vertical" Margin="2" VerticalAlignment="Center">
-                        <TextBox Text="{Binding TemporaryHitPoints}" Background="Transparent"/>
+                        <TextBox Padding="0" Text="{Binding PlayerCharacter.TemporaryHitPoints}" Background="Transparent"/>
                         <TextBlock HorizontalAlignment="Center" FontSize="10">Временные хиты</TextBlock>
                     </StackPanel>
                 </Border>
@@ -368,9 +371,9 @@
                         <StackPanel Orientation="Vertical" Margin="2" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock FontSize="6">Всего</TextBlock>
-                                <TextBox Text="{Binding HitDice}" FontSize="6" Width="25"/>
+                                <TextBox Padding="0" Text="{Binding PlayerCharacter.HitDice}" FontSize="6" Width="25"/>
                             </StackPanel>
-                            <TextBox Background="Transparent"/>
+                            <TextBox Padding="0" Background="Transparent"/>
                             <TextBlock HorizontalAlignment="Center" FontSize="7">Кость хитов</TextBlock>
                         </StackPanel>
                     </Border>
@@ -411,7 +414,7 @@
                         <RowDefinition Height="5.5*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Margin="4" Text="{Binding PersonalityTraits}"/>
+                    <TextBox Padding="0" Grid.Row="0" Margin="4" Text="{Binding PlayerCharacter.PersonalityTraits}"/>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="8">Черты характера</TextBlock>
                 </Grid>
                 <Grid Grid.Row="1">
@@ -419,7 +422,7 @@
                         <RowDefinition Height="5.5*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Margin="4" Text="{Binding Ideals}"/>
+                    <TextBox Padding="0" Grid.Row="0" Margin="4" Text="{Binding PlayerCharacter.Ideals}"/>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="8">Идеалы</TextBlock>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -427,7 +430,7 @@
                         <RowDefinition Height="5.5*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Margin="4" Text="{Binding Bonds}"/>
+                    <TextBox Padding="0" Grid.Row="0" Margin="4" Text="{Binding PlayerCharacter.Bonds}"/>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="8">Привязанности</TextBlock>
                 </Grid>
                 <Grid Grid.Row="3">
@@ -435,7 +438,7 @@
                         <RowDefinition Height="5.5*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Margin="4" Text="{Binding Flaws}"/>
+                    <TextBox Padding="0" Grid.Row="0" Margin="4" Text="{Binding PlayerCharacter.Flaws}"/>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="8">Слабости</TextBlock>
                 </Grid>
             </Grid>
@@ -456,7 +459,7 @@
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding PassiveWisdom}" Width="25"/>
+                <TextBox Padding="0" Text="{Binding PlayerCharacter.PassiveWisdom}" Width="25"/>
                 <TextBlock FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center">Пассивная мудрость (Восприятие)</TextBlock>
             </StackPanel>
             <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" CornerRadius="5" Margin="3 15 3 3">
@@ -465,7 +468,7 @@
                         <RowDefinition Height="10*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Text="{Binding ProficienciesAndLanguages}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.ProficienciesAndLanguages}"/>
                     <TextBlock FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">Прочие владения и языки</TextBlock>
                 </Grid>
             </Border>
@@ -486,25 +489,25 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="2">
                     <TextBlock HorizontalAlignment="Center">ММ</TextBlock>
-                    <TextBox Text="{Binding CopperPieces}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.CopperPieces}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="0" Margin="2">
                     <TextBlock HorizontalAlignment="Center">СМ</TextBlock>
-                    <TextBox Text="{Binding SilverPieces}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.SilverPieces}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Grid.Row="0" Margin="2">
                     <TextBlock HorizontalAlignment="Center">ЗМ</TextBlock>
-                    <TextBox Text="{Binding GoldPieces}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.GoldPieces}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="3" Grid.Row="0" Margin="2">
                     <TextBlock HorizontalAlignment="Center">ЭМ</TextBlock>
-                    <TextBox Text="{Binding ElectrumPieces}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.ElectrumPieces}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="4" Grid.Row="0" Margin="2">
                     <TextBlock HorizontalAlignment="Center">ПМ</TextBlock>
-                    <TextBox Text="{Binding PlatinumPieces}"/>
+                    <TextBox Padding="0" Text="{Binding PlayerCharacter.PlatinumPieces}"/>
                 </StackPanel>
-                <TextBox Grid.Row="1" Grid.ColumnSpan="5" Text="{Binding Equipment}"/>
+                <TextBox Padding="0" Grid.Row="1" Grid.ColumnSpan="5" Text="{Binding PlayerCharacter.Equipment}"/>
                 <TextBlock FontSize="8" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">Снаряжение</TextBlock>
             </Grid>
         </Border>
@@ -515,7 +518,7 @@
                         <RowDefinition Height="20*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox TextWrapping="Wrap" Text="{Binding FeaturesAndTraits}"/>
+                    <TextBox Padding="0" TextWrapping="Wrap" Text="{Binding PlayerCharacter.FeaturesAndTraits}"/>
                     <TextBlock FontSize="8" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Умения и способности</TextBlock>
                 </Grid>
             </Border>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DnDPartyManager.V.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="150" d:DesignWidth="300">
-    <Border CornerRadius="5" BorderThickness="1" BorderBrush="Coral" Background="Lavender">
+    <Border CornerRadius="5" BorderThickness="1">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>

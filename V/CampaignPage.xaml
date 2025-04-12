@@ -24,17 +24,17 @@
     </Page.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15*"></ColumnDefinition>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="15*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"></RowDefinition>
-            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="0.75*"></RowDefinition>
+            <RowDefinition Height="0.75*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>            
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" Grid.Column="0" Margin="5" ItemsSource="{Binding Campaigns}" SelectedItem="{Binding Campaign}">
+        <ComboBox MinHeight="35" Grid.Row="0" Grid.Column="0" Margin="5" ItemsSource="{Binding Campaigns}" SelectedItem="{Binding Campaign}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>

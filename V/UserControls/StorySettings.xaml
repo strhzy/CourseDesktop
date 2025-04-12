@@ -7,14 +7,25 @@
       mc:Ignorable="d"
       Title="StorySettings">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="20*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" Text="{Binding SelectedStory.Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"></TextBox>
-        <TextBox Grid.Row="1" Text="{Binding SelectedStory.Description}"></TextBox>
+        <GroupBox Margin="0,5,0,5">
+            <!-- Заголовок GroupBox с редактируемым текстом -->
+            <GroupBox.Header>
+                <TextBox Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         Margin="0"
+                         FontWeight="SemiBold"
+                         MinWidth="100" />
+            </GroupBox.Header>
+            <!-- Содержимое GroupBox -->
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <StackPanel Orientation="Vertical">
+                    <TextBox Text="{Binding SelectedItem.Description, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap"
+                             MaxWidth="500"
+                             Margin="0,5,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Page>

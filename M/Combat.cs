@@ -10,10 +10,10 @@ namespace DnDPartyManager.M
         private string name;
 
         [ObservableProperty]
-        private ObservableCollection<PlayerCharacter> players = new();
+        private ObservableCollection<int> playersIds = new();
 
         [ObservableProperty]
-        private ObservableCollection<NPC> npcs = new();
+        private ObservableCollection<int> npcsIds = new();
 
         [ObservableProperty]
         private ObservableCollection<Enemy> enemies = new();
