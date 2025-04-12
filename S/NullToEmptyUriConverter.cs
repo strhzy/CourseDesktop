@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace DnDPartyManager.S
@@ -7,7 +9,7 @@ namespace DnDPartyManager.S
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value as Uri ?? new Uri("pack://application:,,,/V/UserControls/Character.xaml");
+            return value == null || string.IsNullOrEmpty(value.ToString()) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

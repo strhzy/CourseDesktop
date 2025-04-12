@@ -4,12 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V"
-      xmlns:v="clr-namespace:DnDPartyManager.V.UserControls"
+      xmlns:cards="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
       xmlns:converters="clr-namespace:DnDPartyManager.S"
       Title="PlayerCharacterPage" MinHeight="768" MinWidth="1366">
     <Page.Resources>
         <converters:NullToEmptyUriConverter x:Key="NullToEmptyUriConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,13 +26,21 @@
             <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-            <Button Content="Добавить персонажа" Command="{Binding AddCharacterCommand}"></Button>
-            <Button Content="Clear" Command="{Binding ClearCommand}"></Button>
+            <Button Content="Добавить персонажа" Command="{Binding AddCharacterCommand}" Margin="5"></Button>
+            <Button Content="Очистить" Command="{Binding ClearCommand}" Margin="5"></Button>
+            <ComboBox Width="200" Margin="5" ItemsSource="{Binding Combats}" SelectedItem="{Binding SelectedCombat}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Content="Добавить в бой" Command="{Binding AddToCombatCommand}" Margin="5"></Button>
         </StackPanel>
         <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding PlayerCharacters}" SelectedItem="{Binding SelectedPlayer}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <v:CharacterCard/>
+                    <cards:CharacterCard/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

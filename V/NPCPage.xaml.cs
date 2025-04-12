@@ -1,11 +1,14 @@
 using System.Windows.Controls;
+using DnDPartyManager.VM;
 
-namespace DnDPartyManager.V;
-
-public partial class NPCPage : Page
+namespace DnDPartyManager.V
 {
-    public NPCPage()
+    public partial class NPCPage : Page
     {
-        InitializeComponent();
+        public NPCPage()
+        {
+            InitializeComponent();
+            DataContext = new NPCViewModel();
+        }
     }
 }

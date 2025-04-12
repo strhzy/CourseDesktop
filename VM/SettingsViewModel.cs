@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DnDPartyManager.M;

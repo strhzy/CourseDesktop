@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LiteDB;
 
 namespace DnDPartyManager.M
@@ -11,6 +12,8 @@ namespace DnDPartyManager.M
 
         [ObservableProperty] 
         public string? slug;
+
+        [ObservableProperty] public int initiative;
 
         [ObservableProperty] 
         public string? name;
