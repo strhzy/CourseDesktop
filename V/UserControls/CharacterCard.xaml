@@ -30,10 +30,14 @@
             <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ClassType}"></TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="4">Уровень</TextBlock>
             <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Level}"></TextBlock>
-            <Button Content="Удалить" Grid.Column="2" Grid.Row="2"
+            <Button Content="Удалить" Grid.Column="2" Grid.Row="1"
                     Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                     CommandParameter="{Binding}"
-                    Margin="5,0,0,0"/>    
+                    Margin="5,0,0,0"/>
+            <Button Content="Экспорт" Grid.Column="2" Grid.Row="3"
+                    Command="{Binding DataContext.ExportItemCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                    CommandParameter="{Binding}"
+                    Margin="5,0,0,0"/>   
         </Grid>
     </Border>
 </UserControl>
