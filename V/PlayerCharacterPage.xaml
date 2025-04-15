@@ -25,6 +25,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
             <Button Content="Добавить персонажа" Command="{Binding AddCharacterCommand}"></Button>
             <Button Content="Clear" Command="{Binding ClearCommand}"></Button>
+            <Button Content="Импорт" Command="{Binding ImportItemCommand}"></Button>
         </StackPanel>
         <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding PlayerCharacters}" SelectedItem="{Binding SelectedPlayer}">
             <ListBox.ItemTemplate>

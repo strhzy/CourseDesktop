@@ -1,10 +1,14 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DnDPartyManager.M;
 using DnDPartyManager.S;
 using LiteDB;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DnDPartyManager.VM;
 
@@ -35,6 +39,41 @@ public partial class CharacterViewModel : ObservableObject
             col.Delete(item.Id);
             Console.WriteLine("Delete " + item.Name);
             UpdateCol();
+        }
+    }
+    
+    [RelayCommand]
+    private void ExportItem(PlayerCharacter item)
+    {
+        if (item != null && PlayerCharacters.Contains(item))
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            CommonFileDialogResult result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                string fileName = dialog.FileName;
+                string json = JsonSerializer.Serialize(item);
+                string filePath = Path.Combine(fileName, "output.json");
+                File.WriteAllText(filePath, json);
+                MessageBox.Show("Экспорт " + item.Name + " успешен");
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void ImportItem()
+    {
+        CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+        dialog.IsFolderPicker = false;
+        CommonFileDialogResult result = dialog.ShowDialog();
+        if (result == CommonFileDialogResult.Ok)
+        {
+            string fileName = dialog.FileName;
+            string json = File.ReadAllText(fileName);
+            PlayerCharacter character = JsonSerializer.Deserialize<PlayerCharacter>(json);
+            character.Id = col.FindAll().Last().Id + 1;
+            col.Insert(character);
         }
     }
 
