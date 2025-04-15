@@ -1,21 +1,29 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using LiteDB;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
 
 namespace DnDPartyManager.M
 {
     public partial class Combat : ObservableObject
     {
         [ObservableProperty]
-        private string name;
+        private string name = "Новый бой";
 
         [ObservableProperty]
-        private ObservableCollection<int> playersIds = new();
+        private string description;
 
         [ObservableProperty]
-        private ObservableCollection<int> npcsIds = new();
+        private Dictionary<int, Character> participants = new();
 
         [ObservableProperty]
-        private ObservableCollection<Enemy> enemies = new();
+        private Dictionary<int, Enemy> enemies = new();
+
+        [ObservableProperty]
+        private int currentTurn;
+
+        [ObservableProperty]
+        private int turnCounter;
+
+        [ObservableProperty]
+        private bool isFinished;
     }
 }

@@ -22,8 +22,8 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0">Имя персонажа</TextBlock>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"></TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1">Имя игрока</TextBlock>
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PlayerName}"></TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Имя игрока" Visibility="{Binding PlayerName, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PlayerName}" Visibility="{Binding PlayerName, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Grid.Column="0" Grid.Row="2">Раса</TextBlock>
             <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Race}"></TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="3">Класс</TextBlock>

@@ -1,5 +1,3 @@
-namespace DnDPartyManager.VM;
-
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DnDPartyManager.M;
@@ -7,64 +5,95 @@ using DnDPartyManager.S;
 using LiteDB;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
-public partial class CharacterPageViewModel : ObservableObject
+namespace DnDPartyManager.VM
 {
-    private static readonly ILiteCollection<PlayerCharacter> col = DBHelper.DB.GetCollection<PlayerCharacter>("characters");
-
-    [ObservableProperty]
-    private PlayerCharacter _playerCharacter;
-
-    [ObservableProperty]
-    private ObservableCollection<PlayerCharacter> _playerCharacters;
-
-    public CharacterPageViewModel()
+    public partial class CharacterPageViewModel : ObservableObject
     {
-        _playerCharacters = UnivHelper.ListToObserv(col.FindAll().ToList());
-        if (Application.Current?.Properties["SelectedPlayer"] is PlayerCharacter selectedPlayer)
-        {
-            PlayerCharacter = selectedPlayer;
-        }
-        else
-        {
-            PlayerCharacter = col.FindAll().FirstOrDefault() ?? new PlayerCharacter();
-        }
-        SubscribeToPlayerCharacterChanges();
-    }
+        private static readonly ILiteCollection<PlayerCharacter> playerCol = DBHelper.DB.GetCollection<PlayerCharacter>("characters");
+        private static readonly ILiteCollection<NPC> npcCol = DBHelper.DB.GetCollection<NPC>("npcs");
 
-    private void SubscribeToPlayerCharacterChanges()
-    {
-        if (_playerCharacter != null)
-        {
-            _playerCharacter.PropertyChanged += OnPlayerCharacterPropertyChanged;
-        }
-    }
+        [ObservableProperty]
+        private Character character;
 
-    private void OnPlayerCharacterPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        col.Update(_playerCharacter);
-        UpdatePlayerCharacters();
-    }
+        [ObservableProperty]
+        private ObservableCollection<PlayerCharacter> playerCharacters;
 
-    partial void OnPlayerCharacterChanged(PlayerCharacter oldValue, PlayerCharacter newValue)
-    {
-        if (oldValue != null)
+        [ObservableProperty]
+        private ObservableCollection<NPC> npcs;
+
+        public CharacterPageViewModel()
         {
-            oldValue.PropertyChanged -= OnPlayerCharacterPropertyChanged;
+            PlayerCharacters = UnivHelper.ListToObserv(playerCol.FindAll().ToList());
+            Npcs = UnivHelper.ListToObserv(npcCol.FindAll().ToList());
+
+            if (Application.Current?.Properties["SelectedPlayer"] is PlayerCharacter selectedPlayer)
+            {
+                Character = selectedPlayer;
+            }
+            else if (Application.Current?.Properties["SelectedNPC"] is NPC selectedNPC)
+            {
+                Character = selectedNPC;
+            }
+            else
+            {
+                Character = playerCol.FindAll().FirstOrDefault() ?? new PlayerCharacter();
+            }
+
+            SubscribeToCharacterChanges();
         }
 
-        if (newValue != null)
+        private void SubscribeToCharacterChanges()
         {
-            newValue.PropertyChanged += OnPlayerCharacterPropertyChanged;
+            if (Character != null)
+            {
+                Character.PropertyChanged += OnCharacterPropertyChanged;
+            }
         }
 
-        col.Update(newValue);
-        UpdatePlayerCharacters();
-    }
+        private void OnCharacterPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (Character is PlayerCharacter player)
+            {
+                playerCol.Update(player);
+            }
+            else if (Character is NPC npc)
+            {
+                npcCol.Update(npc);
+            }
+            UpdateCollections();
+        }
 
-    private void UpdatePlayerCharacters()
-    {
-        _playerCharacters = UnivHelper.ListToObserv(col.FindAll().ToList());
-        OnPropertyChanged(nameof(PlayerCharacters));
+        partial void OnCharacterChanged(Character oldValue, Character newValue)
+        {
+            if (oldValue != null)
+            {
+                oldValue.PropertyChanged -= OnCharacterPropertyChanged;
+            }
+            if (newValue != null)
+            {
+                newValue.PropertyChanged += OnCharacterPropertyChanged;
+            }
+
+            if (newValue is PlayerCharacter player)
+            {
+                playerCol.Update(player);
+            }
+            else if (newValue is NPC npc)
+            {
+                npcCol.Update(npc);
+            }
+
+            UpdateCollections();
+        }
+
+        private void UpdateCollections()
+        {
+            PlayerCharacters = UnivHelper.ListToObserv(playerCol.FindAll().ToList());
+            Npcs = UnivHelper.ListToObserv(npcCol.FindAll().ToList());
+            OnPropertyChanged(nameof(PlayerCharacters));
+            OnPropertyChanged(nameof(Npcs));
+        }
     }
 }

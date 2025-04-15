@@ -1,3 +1,5 @@
+using System;
+
 namespace DnDPartyManager.M;
 
 public partial class Tab

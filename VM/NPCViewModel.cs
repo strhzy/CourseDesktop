@@ -1,29 +1,25 @@
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DnDPartyManager.M;
 using DnDPartyManager.S;
 using LiteDB;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Text.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Linq;
 
 namespace DnDPartyManager.VM
 {
-    public partial class CharacterViewModel : ObservableObject
+    public partial class NPCViewModel : ObservableObject
     {
         private static readonly ILiteCollection<Campaign> campaignCol = DBHelper.DB.GetCollection<Campaign>("campaigns");
-        [ObservableProperty]
-        private static ILiteCollection<PlayerCharacter> col = DBHelper.DB.GetCollection<PlayerCharacter>("characters");
+        private static readonly ILiteCollection<NPC> col = DBHelper.DB.GetCollection<NPC>("Npcs");
 
         [ObservableProperty]
-        private ObservableCollection<PlayerCharacter> playerCharacters;
+        private ObservableCollection<NPC> npcs;
 
         [ObservableProperty]
-        private PlayerCharacter selectedPlayer;
+        private NPC selectedNPC;
 
         [ObservableProperty]
         private Uri uri;
@@ -34,48 +30,12 @@ namespace DnDPartyManager.VM
         [ObservableProperty]
         private Combat selectedCombat;
 
-        public CharacterViewModel()
+        public NPCViewModel()
         {
             UpdateCol();
             LoadCombats();
             SubscribeToCampaignChanges();
         }
-    }
-    
-    [RelayCommand]
-    private void ExportItem(PlayerCharacter item)
-    {
-        if (item != null && PlayerCharacters.Contains(item))
-        {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            CommonFileDialogResult result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok)
-            {
-                string fileName = dialog.FileName;
-                string json = JsonSerializer.Serialize(item);
-                string filePath = Path.Combine(fileName, "output.json");
-                File.WriteAllText(filePath, json);
-                MessageBox.Show("Экспорт " + item.Name + " успешен");
-            }
-        }
-    }
-
-    [RelayCommand]
-    private void ImportItem()
-    {
-        CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-        dialog.IsFolderPicker = false;
-        CommonFileDialogResult result = dialog.ShowDialog();
-        if (result == CommonFileDialogResult.Ok)
-        {
-            string fileName = dialog.FileName;
-            string json = File.ReadAllText(fileName);
-            PlayerCharacter character = JsonSerializer.Deserialize<PlayerCharacter>(json);
-            character.Id = col.FindAll().Last().Id + 1;
-            col.Insert(character);
-        }
-    }
 
         private void SubscribeToCampaignChanges()
         {
@@ -108,16 +68,16 @@ namespace DnDPartyManager.VM
         }
 
         [RelayCommand]
-        public void AddCharacter()
+        public void AddNPC()
         {
-            col.Insert(new PlayerCharacter { Name = "Новый персонаж" });
+            col.Insert(new NPC { Name = "Новый НИП", Description = "Описание НИПа" });
             UpdateCol();
         }
 
         [RelayCommand]
-        private void DeleteItem(PlayerCharacter item)
+        private void DeleteItem(NPC item)
         {
-            if (item != null && PlayerCharacters.Contains(item))
+            if (item != null && Npcs.Contains(item))
             {
                 col.Delete(item.Id);
                 Console.WriteLine("Delete " + item.Name);
@@ -134,9 +94,9 @@ namespace DnDPartyManager.VM
         [RelayCommand]
         private void AddToCombat()
         {
-            if (SelectedPlayer == null)
+            if (SelectedNPC == null)
             {
-                MessageBox.Show("Пожалуйста, выберите персонажа.");
+                MessageBox.Show("Пожалуйста, выберите НИПа.");
                 return;
             }
 
@@ -146,21 +106,21 @@ namespace DnDPartyManager.VM
                 return;
             }
 
-            if (SelectedCombat.Participants.Values.Any(p => p.Id == SelectedPlayer.Id))
+            if (SelectedCombat.Participants.Values.Any(p => p.Id == SelectedNPC.Id))
             {
-                MessageBox.Show("Этот персонаж уже добавлен в бой.");
+                MessageBox.Show("Этот НИП уже добавлен в бой.");
                 return;
             }
 
-            int initiative = SelectedPlayer.Initiative;
+            int initiative = SelectedNPC.Initiative;
             while (SelectedCombat.Participants.ContainsKey(initiative) || SelectedCombat.Enemies.ContainsKey(initiative))
             {
                 initiative++;
             }
-            SelectedPlayer.Initiative = initiative;
+            SelectedNPC.Initiative = initiative;
 
-            SelectedCombat.Participants[SelectedPlayer.Initiative] = SelectedPlayer;
-            col.Update(SelectedPlayer);
+            SelectedCombat.Participants[SelectedNPC.Initiative] = SelectedNPC;
+            col.Update(SelectedNPC);
 
             var campaign = campaignCol.FindAll().FirstOrDefault();
             if (campaign != null)
@@ -168,29 +128,28 @@ namespace DnDPartyManager.VM
                 campaignCol.Update(campaign);
             }
 
-            MessageBox.Show($"{SelectedPlayer.Name} добавлен в бой {SelectedCombat.Name}.");
+            MessageBox.Show($"{SelectedNPC.Name} добавлен в бой {SelectedCombat.Name}.");
         }
 
         public void UpdateCol()
         {
-            if (PlayerCharacters != null)
+            if (Npcs != null)
             {
-                if (PlayerCharacters.Count() != 0)
+                if (Npcs.Count() != 0)
                 {
-                    PlayerCharacters.Clear();
+                    Npcs.Clear();
                 }
             }
-            PlayerCharacters = UnivHelper.ListToObserv(col.FindAll().ToList());
+            Npcs = UnivHelper.ListToObserv(col.FindAll().ToList());
         }
 
-        partial void OnSelectedPlayerChanged(PlayerCharacter newValue)
+        partial void OnSelectedNPCChanged(NPC newValue)
         {
             Uri = new Uri("", UriKind.Relative);
             if (newValue != null)
             {
-                Console.WriteLine($"Chose player: {newValue.Name}");
-                Console.WriteLine("Cleared uri");
-                Application.Current.Properties["SelectedPlayer"] = newValue;
+                Console.WriteLine($"Chose NPC: {newValue.Name}");
+                Application.Current.Properties["SelectedNPC"] = newValue;
                 Uri = new Uri("/V/UserControls/Character.xaml", UriKind.Relative);
                 Console.WriteLine($"Set uri: {Uri}");
             }
