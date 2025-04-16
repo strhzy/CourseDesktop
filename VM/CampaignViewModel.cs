@@ -267,6 +267,36 @@ namespace DnDPartyManager.VM
         }
         
         [RelayCommand]
+        private void AddNPCToCombat(NPC npc)
+        {
+            if (SelectedItem is Combat combat && npc != null)
+            {
+                // Проверка на дублирование
+                if (combat.Participants.Any(p => p.SourceId.Equals(npc.Id) && p.Type == ParticipantType.Npc))
+                {
+                    MessageBox.Show("Этот NPC уже добавлен в бой");
+                    return;
+                }
+
+                var participant = new CombatParticipant
+                {
+                    Name = npc.Name,
+                    Initiative = new Random().Next(1, 20),
+                    CurrentHitPoints = 10, // Можно добавить HP для NPC в классе NPC
+                    MaxHitPoints = 10,
+                    ArmorClass = 10,
+                    SourceId = npc.Id,
+                    Type = ParticipantType.Npc
+                };
+        
+                combat.Participants.Add(participant);
+                SortCombatParticipants(combat);
+                UpdateCampaign();
+                MessageBox.Show($"{npc.Name} добавлен в бой");
+            }
+        }
+        
+        [RelayCommand]
         private void AddEnemyToCombat(Enemy enemy)
         {
             if (SelectedItem is Combat combat && enemy != null)

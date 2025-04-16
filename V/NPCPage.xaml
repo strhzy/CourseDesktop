@@ -28,8 +28,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <!-- Только изменим Frame на NavigationFrame -->
         <Border Grid.Column="2" Grid.Row="1" BorderBrush="Black" BorderThickness="2">
-            <Frame Source="{Binding Uri}" NavigationUIVisibility="Hidden"/>
+            <Frame Source="{Binding Uri}" NavigationUIVisibility="Hidden"
+                   NavigationService.LoadCompleted="Frame_LoadCompleted"/>
         </Border>
     </Grid>
 </Page>

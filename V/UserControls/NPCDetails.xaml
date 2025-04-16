@@ -1,0 +1,105 @@
+﻿<!-- V/UserControls/NPCDetails.xaml -->
+<Page x:Class="DnDPartyManager.V.UserControls.NPCDetails"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:DnDPartyManager.V.UserControls"
+      mc:Ignorable="d"
+      Title="NPCDetails">
+    
+    <Grid Margin="10">
+        <Grid.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Margin" Value="0,0,5,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Заголовок с именем NPC -->
+        <TextBox Grid.Row="0" Text="{Binding SelectedNPC.Name, UpdateSourceTrigger=PropertyChanged}"
+                 FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+        
+        <!-- Основные характеристики -->
+        <GroupBox Grid.Row="1" Header="Основные характеристики" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Раса:"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedNPC.Race}"/>
+                
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Профессия:"/>
+                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SelectedNPC.Occupation}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Хиты:"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedNPC.HitPoints}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Класс брони:"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedNPC.ArmorClass}"/>
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Описание:"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
+                         Text="{Binding SelectedNPC.Description}" TextWrapping="Wrap" Height="60"/>
+            </Grid>
+        </GroupBox>
+        
+        <!-- Личностные характеристики -->
+        <GroupBox Grid.Row="2" Header="Личностные характеристики" Margin="0,0,0,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Text="Черты характера:" Width="120"/>
+                    <TextBox Text="{Binding SelectedNPC.PersonalityTraits}" Width="300"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="Идеалы:" Width="120"/>
+                    <TextBox Text="{Binding SelectedNPC.Ideals}" Width="300"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Text="Привязанности:" Width="120"/>
+                    <TextBox Text="{Binding SelectedNPC.Bonds}" Width="300"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <TextBlock Text="Слабости:" Width="120"/>
+                    <TextBox Text="{Binding SelectedNPC.Flaws}" Width="300"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        
+        <!-- Кнопки действий -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Сохранить" Command="{Binding SaveNPCCommand}" Width="100" Margin="0,0,10,0"/>
+            <Button Content="Добавить в бой" Command="{Binding AddNPCToCombatCommand}" 
+                    CommandParameter="{Binding SelectedNPC}" Width="120"/>
+        </StackPanel>
+    </Grid>
+</Page>
