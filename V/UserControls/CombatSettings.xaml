@@ -9,61 +9,62 @@
       Title="CombatSettings">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!-- Название боя -->
-        <wpfui:TextBox Grid.Row="0" 
-                       Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}" 
-                       Margin="0,0,0,10" 
-                       PlaceholderText="Название боя" />
-
-        <!-- Игроки -->
-        <GroupBox Grid.Row="1" Header="Игроки" Margin="0,0,0,10">
-            <ListBox ItemsSource="{Binding CombatPlayers}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0" />
-                            <wpfui:TextBox Text="{Binding CurrentHitPoints, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D}}"  
-                                           Width="50" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
-
-        <!-- NPC -->
-        <GroupBox Grid.Row="2" Header="NPC" Margin="0,0,0,10">
-            <ListBox ItemsSource="{Binding CombatNpcs}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0" />
-                            <wpfui:TextBox Text="{Binding CurrentHitPoints, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D}}" 
-                                           Width="50" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
-
-        <!-- Враги -->
-        <GroupBox Grid.Row="3" Header="Враги">
-            <ListBox ItemsSource="{Binding CombatEnemies}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0" />
-                            <wpfui:TextBox Text="{Binding Hit_points, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:D}}" 
-                                           Width="50" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
+        
+        <wpfui:TextBox Grid.Row="0"
+                      Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
+                      Margin="0,0,0,10"
+                      PlaceholderText="Название боя"/>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="Раунд: " Margin="5"/>
+            <TextBlock Text="{Binding CurrentCombatRound}" Margin="5"/>
+            <TextBlock Text="Текущий ход: " Margin="5"/>
+            <TextBlock Text="{Binding CurrentCombatParticipant.Name}" Margin="5"/>
+            
+            <Button Content="Начать бой" 
+                    Command="{Binding StartCombatCommand}" 
+                    Margin="5"
+                    Visibility="{Binding IsCombatActive, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+            
+            <Button Content="Следующий ход" 
+                    Command="{Binding NextTurnCommand}" 
+                    Margin="5"
+                    Visibility="{Binding IsCombatActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            
+            <Button Content="Завершить бой" 
+                    Command="{Binding EndCombatCommand}" 
+                    Margin="5"
+                    Visibility="{Binding IsCombatActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </StackPanel>
+        
+        <DataGrid Grid.Row="2" 
+                 ItemsSource="{Binding CombatParticipants}"
+                 AutoGenerateColumns="False"
+                 CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="Auto"/>
+                <DataGridTextColumn Header="Инициатива" Binding="{Binding Initiative}" Width="Auto"/>
+                <DataGridTemplateColumn Header="ХП" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CurrentHitPoints}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding CurrentHitPoints, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Макс ХП" Binding="{Binding MaxHitPoints}" Width="Auto"/>
+                <DataGridTextColumn Header="КЗ" Binding="{Binding ArmorClass}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Активен" Binding="{Binding IsActive}" Width="Auto" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

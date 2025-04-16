@@ -8,14 +8,25 @@ namespace DnDPartyManager.M
     {
         [ObservableProperty]
         private string name;
-
+        
         [ObservableProperty]
-        private ObservableCollection<int> playersIds = new();
-
+        private ObservableCollection<CombatParticipant> participants = new();
+        
         [ObservableProperty]
-        private ObservableCollection<int> npcsIds = new();
-
+        private int currentRound = 1;
+        
         [ObservableProperty]
-        private ObservableCollection<Enemy> enemies = new();
+        private int currentTurnIndex = 0;
+        
+        [BsonIgnore]
+        [ObservableProperty]
+        private CombatParticipant currentParticipant;
+    }
+
+    public enum ParticipantType
+    {
+        Player,
+        Npc,
+        Enemy
     }
 }

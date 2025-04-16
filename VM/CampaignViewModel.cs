@@ -32,14 +32,18 @@ namespace DnDPartyManager.VM
         [ObservableProperty]
         private Campaign campaign;
 
+        // Боевая система
         [ObservableProperty]
-        private ObservableCollection<PlayerCharacter> combatPlayers;
+        private ObservableCollection<CombatParticipant> combatParticipants = new();
 
         [ObservableProperty]
-        private ObservableCollection<PlayerCharacter> combatNpcs;
+        private CombatParticipant currentCombatParticipant;
 
         [ObservableProperty]
-        private ObservableCollection<Enemy> combatEnemies;
+        private int currentCombatRound = 1;
+
+        [ObservableProperty]
+        private bool isCombatActive;
 
         public CampaignViewModel()
         {
@@ -48,6 +52,7 @@ namespace DnDPartyManager.VM
                 new Tab() { Name = "Сюжет", Uri = new Uri("/V/UserControls/StorySettings.xaml", UriKind.Relative) },
                 new Tab() { Name = "Бой", Uri = new Uri("/V/UserControls/CombatSettings.xaml", UriKind.Relative) }
             ];
+
             Load();
         }
 
@@ -60,21 +65,20 @@ namespace DnDPartyManager.VM
                 Campaigns = UnivHelper.ListToObserv(col.FindAll().ToList());
             }
             Campaign = Campaigns.First();
-
             SubscribeToCampaignChanges();
-            UpdateCombatLists();
         }
 
         private void SubscribeToCampaignChanges()
         {
-            // Подписываемся на изменения PlotItems
             Campaign.PlotItems.CollectionChanged += (s, e) =>
             {
-                col.Update(Campaign); // Сохраняем при добавлении/удалении элементов
-                UpdateCombatLists();
+                col.Update(Campaign);
+                if (SelectedItem is Combat combat)
+                {
+                    UpdateCombatParticipants(combat);
+                }
             };
 
-            // Подписываемся на каждый Combat в PlotItems
             foreach (var item in Campaign.PlotItems.OfType<Combat>())
             {
                 SubscribeToCombatChanges(item);
@@ -83,40 +87,18 @@ namespace DnDPartyManager.VM
 
         private void SubscribeToCombatChanges(Combat combat)
         {
-            // Подписка на изменение свойств Combat
-            combat.PropertyChanged += (s, e) =>
-            {
-                col.Update(Campaign); // Обновляем Campaign при изменении Combat
-            };
-
-            // Подписка на изменения коллекций внутри Combat
-            combat.PlayersIds.CollectionChanged += (s, e) => col.Update(Campaign);
-            combat.NpcsIds.CollectionChanged += (s, e) => col.Update(Campaign);
-            combat.Enemies.CollectionChanged += (s, e) =>
+            combat.PropertyChanged += (s, e) => col.Update(Campaign);
+            combat.Participants.CollectionChanged += (s, e) =>
             {
                 col.Update(Campaign);
-                // Обновляем базу для новых врагов
                 if (e.NewItems != null)
                 {
-                    foreach (Enemy enemy in e.NewItems)
+                    foreach (CombatParticipant participant in e.NewItems)
                     {
-                        enemyCol.Upsert(enemy);
+                        participant.PropertyChanged += (s, e) => col.Update(Campaign);
                     }
                 }
             };
-
-            // Подписка на изменения HP врагов
-            foreach (var enemy in combat.Enemies)
-            {
-                enemy.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(Enemy.Hit_points))
-                    {
-                        enemyCol.Update(enemy);
-                        col.Update(Campaign);
-                    }
-                };
-            }
         }
 
         [RelayCommand]
@@ -128,19 +110,17 @@ namespace DnDPartyManager.VM
         [RelayCommand]
         private void AddStory()
         {
-            StoryElement storyElement = new StoryElement() { Name = "123123123123123" };
+            var storyElement = new StoryElement() { Name = "Новый сюжетный элемент" };
             Campaign.PlotItems.Add(storyElement);
-            Console.WriteLine("Add story " + storyElement.Name);
             UpdateCampaign();
         }
 
         [RelayCommand]
         private void AddCombat()
         {
-            var combat = new Combat() { Name = "stub" };
+            var combat = new Combat() { Name = "Новый бой" };
             Campaign.PlotItems.Add(combat);
-            Console.WriteLine("Add stub combat");
-            SubscribeToCombatChanges(combat); // Подписываемся на новый Combat
+            SubscribeToCombatChanges(combat);
             UpdateCampaign();
         }
 
@@ -150,94 +130,160 @@ namespace DnDPartyManager.VM
             if (item != null && Campaign.PlotItems.Contains(item))
             {
                 Campaign.PlotItems.Remove(item);
-                Console.WriteLine("Delete stub " + item.ToString());
                 UpdateCampaign();
             }
         }
 
+        // Боевые команды
+        [RelayCommand]
+        private void AddPlayerToCombat(PlayerCharacter player)
+        {
+            if (SelectedItem is Combat combat && player != null)
+            {
+                var participant = new CombatParticipant
+                {
+                    Name = player.Name,
+                    Initiative = player.Initiative,
+                    CurrentHitPoints = player.CurrentHitPoints,
+                    MaxHitPoints = player.MaxHitPoints,
+                    ArmorClass = player.ArmorClass,
+                    SourceId = player.Id,
+                    Type = ParticipantType.Player
+                };
+                
+                combat.Participants.Add(participant);
+                SortCombatParticipants(combat);
+                UpdateCampaign();
+            }
+        }
+
+        [RelayCommand]
+        private void AddEnemyToCombat(Enemy enemy)
+        {
+            if (SelectedItem is Combat combat && enemy != null)
+            {
+                var participant = new CombatParticipant
+                {
+                    Name = enemy.Name,
+                    Initiative = new Random().Next(1, 20) + (enemy.Dexterity ?? 10 - 10) / 2,
+                    CurrentHitPoints = enemy.Hit_points ?? 0,
+                    MaxHitPoints = enemy.Hit_points ?? 0,
+                    ArmorClass = enemy.Armor_class ?? 10,
+                    SourceId = enemy.Id,
+                    Type = ParticipantType.Enemy
+                };
+                
+                combat.Participants.Add(participant);
+                SortCombatParticipants(combat);
+                UpdateCampaign();
+            }
+        }
+
+        [RelayCommand]
+        private void StartCombat()
+        {
+            if (SelectedItem is Combat combat && combat.Participants.Any())
+            {
+                combat.CurrentRound = 1;
+                combat.CurrentTurnIndex = 0;
+                combat.CurrentParticipant = combat.Participants[0];
+                combat.CurrentParticipant.IsActive = true;
+                IsCombatActive = true;
+                
+                CurrentCombatRound = combat.CurrentRound;
+                CurrentCombatParticipant = combat.CurrentParticipant;
+                UpdateCampaign();
+            }
+        }
+
+        [RelayCommand]
+        private void NextTurn()
+        {
+            if (SelectedItem is Combat combat && combat.Participants.Any())
+            {
+                combat.CurrentParticipant.IsActive = false;
+                
+                if (combat.CurrentTurnIndex >= combat.Participants.Count - 1)
+                {
+                    combat.CurrentTurnIndex = 0;
+                    combat.CurrentRound++;
+                }
+                else
+                {
+                    combat.CurrentTurnIndex++;
+                }
+                
+                combat.CurrentParticipant = combat.Participants[combat.CurrentTurnIndex];
+                combat.CurrentParticipant.IsActive = true;
+                
+                CurrentCombatRound = combat.CurrentRound;
+                CurrentCombatParticipant = combat.CurrentParticipant;
+                UpdateCampaign();
+            }
+        }
+
+        [RelayCommand]
+        private void EndCombat()
+        {
+            if (SelectedItem is Combat combat)
+            {
+                foreach (var participant in combat.Participants)
+                {
+                    participant.IsActive = false;
+                }
+                
+                IsCombatActive = false;
+                UpdateCampaign();
+            }
+        }
+
+        private void SortCombatParticipants(Combat combat)
+        {
+            combat.Participants = new ObservableCollection<CombatParticipant>(
+                combat.Participants.OrderByDescending(p => p.Initiative));
+        }
+
         partial void OnCampaignChanged(Campaign oldValue, Campaign newValue)
         {
-            Console.WriteLine(newValue.Name);
             if (oldValue != null)
             {
-                // Отписываемся от старой Campaign
                 oldValue.PlotItems.CollectionChanged -= (s, e) => col.Update(oldValue);
-                foreach (var item in oldValue.PlotItems.OfType<Combat>())
-                {
-                    item.PropertyChanged -= (s, e) => col.Update(oldValue);
-                    item.PlayersIds.CollectionChanged -= (s, e) => col.Update(oldValue);
-                    item.NpcsIds.CollectionChanged -= (s, e) => col.Update(oldValue);
-                    item.Enemies.CollectionChanged -= (s, e) => col.Update(oldValue);
-                }
             }
             SubscribeToCampaignChanges();
-            UpdateCombatLists();
         }
 
         partial void OnSelectedItemChanged(object newValue)
         {
             if (newValue != null)
             {
-                Console.WriteLine($"Chose: {newValue}");
                 Application.Current.Properties["CurrentCampaign"] = Campaign;
+                
                 if (newValue is Combat combat)
                 {
-                    Console.WriteLine($"Chose Combat: {combat.Name}");
                     Application.Current.Properties["SelectedPlotItem"] = combat;
                     SelectedTab = tabs[1];
-                    UpdateCombatLists(combat);
+                    UpdateCombatParticipants(combat);
+                    
+                    IsCombatActive = combat.CurrentParticipant != null;
+                    if (IsCombatActive)
+                    {
+                        CurrentCombatRound = combat.CurrentRound;
+                        CurrentCombatParticipant = combat.CurrentParticipant;
+                    }
                 }
                 else if (newValue is StoryElement story)
                 {
-                    Console.WriteLine($"Chose StoryElement: {story.Name}");
                     Application.Current.Properties["SelectedPlotItem"] = story;
                     SelectedTab = tabs[0];
-                    CombatPlayers = new ObservableCollection<PlayerCharacter>();
-                    CombatNpcs = new ObservableCollection<PlayerCharacter>();
-                    CombatEnemies = new ObservableCollection<Enemy>();
+                    CombatParticipants.Clear();
+                    IsCombatActive = false;
                 }
             }
         }
 
-        private void UpdateCombatLists(Combat combat = null)
+        private void UpdateCombatParticipants(Combat combat)
         {
-            combat ??= SelectedItem as Combat;
-            if (combat != null)
-            {
-                CombatPlayers = new ObservableCollection<PlayerCharacter>(
-                    combat.PlayersIds.Select(id => playerCol.FindById(id)).Where(p => p != null));
-                CombatNpcs = new ObservableCollection<PlayerCharacter>(
-                    combat.NpcsIds.Select(id => playerCol.FindById(id)).Where(p => p != null));
-                CombatEnemies = combat.Enemies;
-
-                // Подписываемся на изменения HP игроков и NPC
-                foreach (var player in CombatPlayers)
-                {
-                    player.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(PlayerCharacter.CurrentHitPoints))
-                        {
-                            playerCol.Update(player);
-                        }
-                    };
-                }
-                foreach (var npc in CombatNpcs)
-                {
-                    npc.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(PlayerCharacter.CurrentHitPoints))
-                        {
-                            playerCol.Update(npc);
-                        }
-                    };
-                }
-            }
-            else
-            {
-                CombatPlayers = new ObservableCollection<PlayerCharacter>();
-                CombatNpcs = new ObservableCollection<PlayerCharacter>();
-                CombatEnemies = new ObservableCollection<Enemy>();
-            }
+            CombatParticipants = new ObservableCollection<CombatParticipant>(combat.Participants);
         }
     }
 }
