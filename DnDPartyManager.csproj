@@ -25,4 +25,9 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Res\icon.ico" />
+      <Resource Include="Res\icon.ico" />
+    </ItemGroup>
+
 </Project>

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DnDPartyManager"
         mc:Ignorable="d"
-        Icon="Res/icon.png"
-        Title="ДнД менеджер" MinHeight="900" MinWidth="1600">
+        Title="DnD Party Manager"
+        Icon="/Res/icon.ico" MinHeight="900" MinWidth="1600">
     <Grid>
         <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
             <TabControl.ItemTemplate>
