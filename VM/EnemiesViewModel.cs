@@ -21,7 +21,7 @@ public partial class EnemiesViewModel : ObservableObject
     [ObservableProperty] private ObservableCollection<Enemy> enemies = new ObservableCollection<Enemy>();
 
     [RelayCommand]
-    private async Task LoadEnemies()
+    private async void LoadEnemies()
     {
         Enemies.Clear();
         foreach (var enem in await DBHelper.GetEnemiesAsync())
@@ -32,7 +32,7 @@ public partial class EnemiesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task NextPage()
+    private async void NextPage()
     {
         CurrentPage++;
         Enemies.Clear();
@@ -44,7 +44,7 @@ public partial class EnemiesViewModel : ObservableObject
     }
     
     [RelayCommand]
-    private async Task PrevPage()
+    private async void PrevPage()
     {
         CurrentPage--;
         Enemies.Clear();
@@ -57,6 +57,7 @@ public partial class EnemiesViewModel : ObservableObject
 
     public EnemiesViewModel()
     {
-        Application.Current.Dispatcher.InvokeAsync(async () => await LoadEnemies());
+        //Application.Current.Dispatcher.InvokeAsync(async () => await LoadEnemies());
+        LoadEnemies();
     }
 }
