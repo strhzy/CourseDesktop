@@ -10,9 +10,10 @@ namespace DnDPartyManager.V
         {
             InitializeComponent();
             DataContext = new NPCViewModel();
+            DetailsFrame.Navigated += OnFrameNavigated;
         }
 
-        private void Frame_LoadCompleted(object sender, NavigationEventArgs e)
+        private void OnFrameNavigated(object sender, NavigationEventArgs e)
         {
             if (e.Content is Page page && page.DataContext == null)
             {

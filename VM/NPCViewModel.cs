@@ -4,6 +4,7 @@ using DnDPartyManager.M;
 using DnDPartyManager.S;
 using LiteDB;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 
 namespace DnDPartyManager.VM
@@ -36,6 +37,7 @@ namespace DnDPartyManager.VM
         {
             var newNPC = new NPC { Name = "Новый NPC" };
             col.Insert(newNPC);
+            newNPC.PropertyChanged += AutoSaveNPC; // Подписываемся на изменения
             LoadNPCs();
             SelectedNPC = newNPC;
         }
@@ -45,20 +47,10 @@ namespace DnDPartyManager.VM
         {
             if (npc != null && MessageBox.Show($"Удалить NPC {npc.Name}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
+                npc.PropertyChanged -= AutoSaveNPC; // Отписываемся от изменений
                 col.Delete(npc.Id);
                 LoadNPCs();
                 SelectedNPC = null;
-            }
-        }
-
-        [RelayCommand]
-        private void SaveNPC()
-        {
-            if (SelectedNPC != null)
-            {
-                col.Update(SelectedNPC);
-                LoadNPCs();
-                MessageBox.Show("Изменения сохранены", "Успех");
             }
         }
 
@@ -99,16 +91,34 @@ namespace DnDPartyManager.VM
             }
         }
 
+        // Метод для автосохранения при изменении свойств NPC
+        private void AutoSaveNPC(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is NPC npc)
+            {
+                col.Update(npc);
+                // Обновляем отображение в списке
+                var index = Npcs.IndexOf(npc);
+                if (index >= 0)
+                {
+                    Npcs[index] = npc;
+                }
+            }
+        }
+
         partial void OnSelectedNPCChanged(NPC oldValue, NPC newValue)
         {
+            if (oldValue != null)
+            {
+                oldValue.PropertyChanged -= AutoSaveNPC;
+                col.Update(oldValue);
+            }
+
             if (newValue != null)
             {
+                newValue.PropertyChanged += AutoSaveNPC;
                 Application.Current.Properties["SelectedNPC"] = newValue;
                 LoadNPCDetails();
-            }
-            else
-            {
-                Uri = null;
             }
         }
     }
