@@ -54,6 +54,23 @@ public partial class EnemiesViewModel : ObservableObject
             Console.WriteLine(Enemies.Count);
         }
     }
+    
+    [RelayCommand]
+    private void AddToCombat(Enemy enemy)
+    {
+        if (Application.Current.Properties["CurrentCampaign"] is Campaign campaign && 
+            Application.Current.Properties["SelectedPlotItem"] is Combat combat)
+        {
+            var mainViewModel = (Application.Current.MainWindow.DataContext as MainViewModel);
+            var campaignVM = mainViewModel?.GetCampaignViewModel();
+            
+            campaignVM?.AddEnemyToCombatCommand.Execute(enemy);
+        }
+        else
+        {
+            MessageBox.Show("Сначала выберите или создайте бой в кампании");
+        }
+    }
 
     public EnemiesViewModel()
     {

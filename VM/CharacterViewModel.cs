@@ -111,4 +111,21 @@ public partial class CharacterViewModel : ObservableObject
             Console.WriteLine($"Set uri: {Uri}");
         }
     }
+    
+    [RelayCommand]
+    private void AddToCombat(PlayerCharacter player)
+    {
+        if (Application.Current.Properties["CurrentCampaign"] is Campaign campaign && 
+            Application.Current.Properties["SelectedPlotItem"] is Combat combat)
+        {
+            var mainViewModel = (Application.Current.MainWindow.DataContext as MainViewModel);
+            var campaignVM = mainViewModel?.GetCampaignViewModel();
+            
+            campaignVM?.AddPlayerToCombatCommand.Execute(player);
+        }
+        else
+        {
+            MessageBox.Show("Сначала выберите или создайте бой в кампании");
+        }
+    }
 }

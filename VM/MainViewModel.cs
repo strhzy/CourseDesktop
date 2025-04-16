@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DnDPartyManager.M;
 using DnDPartyManager.S;
+using DnDPartyManager.V;
 
 namespace DnDPartyManager.VM;
 
@@ -25,5 +27,18 @@ public partial class MainViewModel : ObservableObject
         Thread.Sleep(10);
         SelectedTab = new Tab();
         SelectedTab = tabs[0];
+    }
+    
+    public CampaignViewModel GetCampaignViewModel()
+    {
+        if (SelectedTab?.Uri?.OriginalString == "/V/CampaignPage.xaml")
+        {
+            var frame = (Application.Current.MainWindow as MainView)?.FindName("MainFrame") as Frame;
+            if (frame?.Content is CampaignPage campaignPage)
+            {
+                return campaignPage.DataContext as CampaignViewModel;
+            }
+        }
+        return null;
     }
 }

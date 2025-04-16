@@ -134,51 +134,6 @@ namespace DnDPartyManager.VM
             }
         }
 
-        // Боевые команды
-        [RelayCommand]
-        private void AddPlayerToCombat(PlayerCharacter player)
-        {
-            if (SelectedItem is Combat combat && player != null)
-            {
-                var participant = new CombatParticipant
-                {
-                    Name = player.Name,
-                    Initiative = player.Initiative,
-                    CurrentHitPoints = player.CurrentHitPoints,
-                    MaxHitPoints = player.MaxHitPoints,
-                    ArmorClass = player.ArmorClass,
-                    SourceId = player.Id,
-                    Type = ParticipantType.Player
-                };
-                
-                combat.Participants.Add(participant);
-                SortCombatParticipants(combat);
-                UpdateCampaign();
-            }
-        }
-
-        [RelayCommand]
-        private void AddEnemyToCombat(Enemy enemy)
-        {
-            if (SelectedItem is Combat combat && enemy != null)
-            {
-                var participant = new CombatParticipant
-                {
-                    Name = enemy.Name,
-                    Initiative = new Random().Next(1, 20) + (enemy.Dexterity ?? 10 - 10) / 2,
-                    CurrentHitPoints = enemy.Hit_points ?? 0,
-                    MaxHitPoints = enemy.Hit_points ?? 0,
-                    ArmorClass = enemy.Armor_class ?? 10,
-                    SourceId = enemy.Id,
-                    Type = ParticipantType.Enemy
-                };
-                
-                combat.Participants.Add(participant);
-                SortCombatParticipants(combat);
-                UpdateCampaign();
-            }
-        }
-
         [RelayCommand]
         private void StartCombat()
         {
@@ -278,6 +233,66 @@ namespace DnDPartyManager.VM
                     CombatParticipants.Clear();
                     IsCombatActive = false;
                 }
+            }
+        }
+        
+        [RelayCommand]
+        private void AddPlayerToCombat(PlayerCharacter player)
+        {
+            if (SelectedItem is Combat combat && player != null)
+            {
+                // Проверка на дублирование
+                if (combat.Participants.Any(p => p.SourceId.Equals(player.Id) && p.Type == ParticipantType.Player))
+                {
+                    MessageBox.Show("Этот персонаж уже добавлен в бой");
+                    return;
+                }
+
+                var participant = new CombatParticipant
+                {
+                    Name = player.Name,
+                    Initiative = player.Initiative,
+                    CurrentHitPoints = player.CurrentHitPoints,
+                    MaxHitPoints = player.MaxHitPoints,
+                    ArmorClass = player.ArmorClass,
+                    SourceId = player.Id,
+                    Type = ParticipantType.Player
+                };
+        
+                combat.Participants.Add(participant);
+                SortCombatParticipants(combat);
+                UpdateCampaign();
+                MessageBox.Show($"{player.Name} добавлен в бой");
+            }
+        }
+        
+        [RelayCommand]
+        private void AddEnemyToCombat(Enemy enemy)
+        {
+            if (SelectedItem is Combat combat && enemy != null)
+            {
+                // Проверка на дублирование
+                if (combat.Participants.Any(p => p.SourceId.Equals(enemy.Id) && p.Type == ParticipantType.Enemy))
+                {
+                    MessageBox.Show("Этот враг уже добавлен в бой");
+                    return;
+                }
+
+                var participant = new CombatParticipant
+                {
+                    Name = enemy.Name,
+                    Initiative = new Random().Next(1, 20) + (enemy.Dexterity ?? 10 - 10) / 2,
+                    CurrentHitPoints = enemy.Hit_points ?? 0,
+                    MaxHitPoints = enemy.Hit_points ?? 0,
+                    ArmorClass = enemy.Armor_class ?? 10,
+                    SourceId = enemy.Id,
+                    Type = ParticipantType.Enemy
+                };
+        
+                combat.Participants.Add(participant);
+                SortCombatParticipants(combat);
+                UpdateCampaign();
+                MessageBox.Show($"{enemy.Name} добавлен в бой");
             }
         }
 
