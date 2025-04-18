@@ -24,6 +24,7 @@ public partial class MainViewModel : ObservableObject
             new Tab() { Name = "Персонажи игроков", Uri = new Uri("/V/PlayerCharacterPage.xaml", UriKind.Relative) },
             new Tab() { Name = "НИПы", Uri = new Uri("/V/NPCPage.xaml", UriKind.Relative) }
         ];
+        Task.Run(() => WebSocketHelper.Start(8080));
         Thread.Sleep(10);
         SelectedTab = new Tab();
         SelectedTab = tabs[0];

@@ -34,7 +34,7 @@ public partial class CharacterViewModel : ObservableObject
     [RelayCommand]
     private void DeleteItem(PlayerCharacter item)
     {
-        if (item != null && PlayerCharacters.Contains(item))
+        if (item != null && PlayerCharacters.Contains(item) && MessageBox.Show($"Удалить персонажа {item.Name}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
         {
             col.Delete(item.Id);
             Console.WriteLine("Delete " + item.Name);

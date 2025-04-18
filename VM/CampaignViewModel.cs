@@ -127,7 +127,7 @@ namespace DnDPartyManager.VM
         [RelayCommand]
         private void DeleteItem(object item)
         {
-            if (item != null && Campaign.PlotItems.Contains(item))
+            if (item != null && Campaign.PlotItems.Contains(item) && MessageBox.Show($"Удалить элемент?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 Campaign.PlotItems.Remove(item);
                 UpdateCampaign();

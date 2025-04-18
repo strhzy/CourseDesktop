@@ -16,6 +16,8 @@ public partial class EnemiesViewModel : ObservableObject
 
     [ObservableProperty] private Enemy enemy;
     
+    [ObservableProperty] private string search = "";
+    
     [ObservableProperty] private int currentPage = 1;
     
     [ObservableProperty] private ObservableCollection<Enemy> enemies = new ObservableCollection<Enemy>();
@@ -24,7 +26,7 @@ public partial class EnemiesViewModel : ObservableObject
     private async void LoadEnemies()
     {
         Enemies.Clear();
-        foreach (var enem in await DBHelper.GetEnemiesAsync())
+        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage, Search))
         {
             Enemies.Add(enem);
             Console.WriteLine(Enemies.Count);
@@ -36,7 +38,7 @@ public partial class EnemiesViewModel : ObservableObject
     {
         CurrentPage++;
         Enemies.Clear();
-        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage))
+        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage, Search))
         {
             Enemies.Add(enem);
             Console.WriteLine(Enemies.Count);
@@ -48,7 +50,7 @@ public partial class EnemiesViewModel : ObservableObject
     {
         CurrentPage--;
         Enemies.Clear();
-        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage))
+        foreach (var enem in await DBHelper.GetEnemiesAsync(CurrentPage, Search))
         {
             Application.Current.Dispatcher.Invoke(() => Enemies.Add(enem));
             Console.WriteLine(Enemies.Count);
@@ -64,7 +66,14 @@ public partial class EnemiesViewModel : ObservableObject
             var mainViewModel = (Application.Current.MainWindow.DataContext as MainViewModel);
             var campaignVM = mainViewModel?.GetCampaignViewModel();
             
-            campaignVM?.AddEnemyToCombatCommand.Execute(enemy);
+            if (campaignVM?.AddEnemyToCombatCommand?.CanExecute(enemy) == true)
+            {
+                campaignVM.AddEnemyToCombatCommand.Execute(enemy);
+            }
+            else
+            {
+                MessageBox.Show("Команда не может быть выполнена в текущем состоянии");
+            }
         }
         else
         {

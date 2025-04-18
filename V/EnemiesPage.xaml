@@ -18,7 +18,20 @@
             <ColumnDefinition Width="10*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="2" Content="enemies" Command="{Binding LoadEnemiesCommand}"></Button>
+        <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
+            <TextBox 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Center"
+                Margin="0,0,5,0"
+                MinWidth="100"
+                Text="{Binding Search, Mode=TwoWay}"
+            />
+            <Button 
+                Content="Поиск..." 
+                Padding="10,0"
+                Command="{Binding LoadEnemiesCommand}"
+            />
+        </StackPanel>
         <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Enemies}" ScrollViewer.CanContentScroll="False">
             <ListBox.ItemTemplate>
                 <DataTemplate>
