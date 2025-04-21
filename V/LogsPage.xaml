@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DnDPartyManager.V"
       mc:Ignorable="d"
-      Title="LogsPage" Height="450" Width="800">
+      Title="LogsPage" Background="Transparent">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

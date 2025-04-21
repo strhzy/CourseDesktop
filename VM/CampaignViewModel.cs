@@ -326,6 +326,23 @@ namespace DnDPartyManager.VM
             }
         }
 
+        [RelayCommand]
+        private void AddCampaign()
+        {
+            col.Insert(new Campaign(){Name = "Новая кампания"});
+            Load();
+        }
+
+        [RelayCommand]
+        private void DeleteCampaign()
+        {
+            if (Campaign != null)
+            {
+                col.Delete(Campaign.Id);
+                Load();
+            }
+        }
+
         private void UpdateCombatParticipants(Combat combat)
         {
             CombatParticipants = new ObservableCollection<CombatParticipant>(combat.Participants);

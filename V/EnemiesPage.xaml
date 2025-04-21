@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:DnDPartyManager.V"
       xmlns:cards="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
-      Title="EnemiesView">
+      Title="EnemiesView" Background="Transparent">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>

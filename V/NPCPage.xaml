@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:DnDPartyManager.V"
       xmlns:v="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
-      Title="NPCPage" MinHeight="768" MinWidth="1366">
+      Title="NPCPage" MinHeight="768" MinWidth="1366" Background="Transparent">
     
     <Grid>
         <Grid.RowDefinitions>

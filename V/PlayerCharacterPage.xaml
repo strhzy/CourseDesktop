@@ -7,7 +7,7 @@
       xmlns:v="clr-namespace:DnDPartyManager.V.UserControls"
       mc:Ignorable="d"
       xmlns:converters="clr-namespace:DnDPartyManager.S"
-      Title="PlayerCharacterPage" MinHeight="768" MinWidth="1366">
+      Title="PlayerCharacterPage" MinHeight="768" MinWidth="1366" Background="Transparent">
     <Page.Resources>
         <converters:NullToEmptyUriConverter x:Key="NullToEmptyUriConverter"/>
     </Page.Resources>

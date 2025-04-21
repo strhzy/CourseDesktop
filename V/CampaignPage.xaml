@@ -7,7 +7,7 @@
       xmlns:m="clr-namespace:DnDPartyManager.V.UserControls"
       xmlns:s="clr-namespace:DnDPartyManager.S"
       mc:Ignorable="d"
-      Title="CampaignPage" MinHeight="750" MinWidth="1600">
+      Title="CampaignPage" MinHeight="750" MinWidth="1600" Background="Transparent">
     <Page.Resources> 
         <DataTemplate x:Key="CombatTemplate">
             <m:Combat/>
@@ -34,13 +34,19 @@
             <RowDefinition Height="10*"></RowDefinition>            
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <ComboBox MinHeight="35" Grid.Row="0" Grid.Column="0" Margin="5" ItemsSource="{Binding Campaigns}" SelectedItem="{Binding Campaign}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="5" Orientation="Vertical">
+            <ComboBox MinHeight="35" ItemsSource="{Binding Campaigns}" SelectedItem="{Binding Campaign}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавить кампанию" Command="{Binding AddCampaignCommand}"></Button>
+                <Button Content="Удалить кампанию" Command="{Binding DeleteCampaignCommand}"></Button>
+            </StackPanel>
+        </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <TextBox FontSize="20" Text="{Binding Campaign.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             <Button Command="{Binding AddStoryCommand}" Margin="10 5" Content="Добавить Сюжет"></Button>
